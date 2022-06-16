@@ -1,10 +1,12 @@
-package com.example.androiddemo;
+package com.example.androiddemo.app;
 
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 import androidx.viewpager.widget.ViewPager;
 
+import com.example.androiddemo.ui.adapter.MainFragmentPagerAdapter;
+import com.example.androiddemo.R;
 import com.example.androiddemo.ui.fragment.HomeFragment;
 import com.example.androiddemo.ui.fragment.MeFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -17,14 +19,7 @@ public class MainActivity extends BaseActivity {
     private ViewPager mViewpager;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-        initView();
-        initEvent();
-    }
-
-    private void initEvent() {
+    public void initEvent() {
         mViewpager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
             @Override
             public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
@@ -52,15 +47,25 @@ public class MainActivity extends BaseActivity {
         });
     }
 
-
-    private void initView() {
+    @Override
+    protected void initView() {
         mNavigation = findViewById(R.id.navigation);
         mViewpager = findViewById(R.id.viewpager);
         ArrayList<Fragment> fragmentList = new ArrayList<>();
         fragmentList.add(new HomeFragment());
         fragmentList.add(new MeFragment());
-        MyFragmentPagerAdapter pagerAdapter = new MyFragmentPagerAdapter(getSupportFragmentManager(),fragmentList);
+        MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(),fragmentList);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(fragmentList.size());
+    }
+
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_main;
+    }
+
+    @Override
+    protected void initContent(Bundle savedInstanceState) {
+
     }
 }

@@ -3,20 +3,16 @@ package com.example.androiddemo.ui.login;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.example.androiddemo.BaseActivity;
+import com.example.androiddemo.app.BaseActivity;
 import com.example.androiddemo.R;
-import com.example.androiddemo.bean.User;
+import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
-import com.example.androiddemo.utils.statusBar.StatusBarUtil;
-
-import java.util.ArrayList;
 
 /**
  * 注册
@@ -27,15 +23,16 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
     private ImageView mIvBack;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        StatusBarUtil.setTranslucentStatus(this);
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_reg);
-        initView();
-        initEvent();
+    public void initEvent() {
+        setEditTextTextChangedListener(mEtName);
+        setEditTextTextChangedListener(mEtPwd);
+        setEditTextTextChangedListener(mEtConfirmPwd);
+        mBtnReg.setOnClickListener(this);
+        mIvBack.setOnClickListener(this);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mIvBack = findViewById(R.id.ivBack);
         mEtName = findViewById(R.id.etName);
         mEtPwd = findViewById(R.id.etPwd);
@@ -43,12 +40,14 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
         mBtnReg = findViewById(R.id.btnReg);
     }
 
-    private void initEvent() {
-        setEditTextTextChangedListener(mEtName);
-        setEditTextTextChangedListener(mEtPwd);
-        setEditTextTextChangedListener(mEtConfirmPwd);
-        mBtnReg.setOnClickListener(this);
-        mIvBack.setOnClickListener(this);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_reg;
+    }
+
+    @Override
+    protected void initContent(Bundle savedInstanceState) {
+
     }
 
     private void setEditTextTextChangedListener(EditText et) {
@@ -83,8 +82,8 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
                     return;
                 }
 
-                User user = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
-                if (user != null) {
+                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
+                if (userBean != null) {
                     Toast.makeText(this, "账号已存在", Toast.LENGTH_SHORT).show();
                     return;
                 }

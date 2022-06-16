@@ -10,12 +10,11 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.example.androiddemo.BaseActivity;
-import com.example.androiddemo.MainActivity;
+import com.example.androiddemo.app.BaseActivity;
+import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.R;
-import com.example.androiddemo.bean.User;
+import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
-import com.example.androiddemo.utils.statusBar.StatusBarUtil;
 
 /**
  * 登录
@@ -26,33 +25,33 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private Button mBtnLogin;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        StatusBarUtil.setTranslucentStatus(this);
-        super.onCreate(savedInstanceState);
-
-        User user = DBHelper.getInstance(this).queryUser(1);
-        if(user != null){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
-
-        setContentView(R.layout.activity_login);
-        initView();
-        initEvent();
+    public void initEvent() {
+        setEditTextTextChangedListener(mEtName);
+        setEditTextTextChangedListener(mEtPwd);
+        mBtnReg.setOnClickListener(this);
+        mBtnLogin.setOnClickListener(this);
     }
 
-    private void initView() {
+    @Override
+    protected void initView() {
         mBtnReg = findViewById(R.id.btnReg);
         mBtnLogin = findViewById(R.id.btnLogin);
         mEtName = findViewById(R.id.etName);
         mEtPwd = findViewById(R.id.etPwd);
     }
 
-    private void initEvent() {
-        setEditTextTextChangedListener(mEtName);
-        setEditTextTextChangedListener(mEtPwd);
-        mBtnReg.setOnClickListener(this);
-        mBtnLogin.setOnClickListener(this);
+    @Override
+    protected int getLayoutId() {
+        return R.layout.activity_login;
+    }
+
+    @Override
+    protected void initContent(Bundle savedInstanceState) {
+        UserBean userBean = DBHelper.getInstance(this).queryUser(1);
+        if(userBean != null){
+            startActivity(new Intent(this, MainActivity.class));
+            finish();
+        }
     }
 
     private void setEditTextTextChangedListener(EditText et) {
@@ -81,17 +80,17 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(new Intent(this, RegActivity.class));
                 break;
             case R.id.btnLogin:
-                User user = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
-                if (user == null) {
+                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
+                if (userBean == null) {
                     Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
                     return;
-                } else if (!mEtPwd.getText().toString().equals(user.getPassword())) {
+                } else if (!mEtPwd.getText().toString().equals(userBean.getPassword())) {
                     Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
                     return;
                 }
 
-                user.setIs_login(1);
-                DBHelper.getInstance(this).updateUser(user.get_id(), 1);
+                userBean.setIs_login(1);
+                DBHelper.getInstance(this).updateUser(userBean.get_id(), 1);
                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MainActivity.class));
                 finish();

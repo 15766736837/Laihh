@@ -8,7 +8,7 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
-import com.example.androiddemo.bean.User;
+import com.example.androiddemo.bean.UserBean;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TB_NAME = "user";
@@ -101,26 +101,26 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
-    public User queryUser(String user_name){
+    public UserBean queryUser(String user_name){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from user where user_name=?", new String[]{user_name});
         // 游标只要不是在最后一行之后，就一直循环
         cursor.moveToFirst();
-        User user = null;
+        UserBean userBean = null;
         while (!cursor.isAfterLast()){
-            user = new User();
-            user.set_id(cursor.getLong(0));
-            user.setUser_name(cursor.getString(1));
-            user.setPassword(cursor.getString(2));
-            user.setIs_login(cursor.getInt(3));
+            userBean = new UserBean();
+            userBean.set_id(cursor.getLong(0));
+            userBean.setUser_name(cursor.getString(1));
+            userBean.setPassword(cursor.getString(2));
+            userBean.setIs_login(cursor.getInt(3));
             // 将游标移到下一行
             cursor.moveToNext();
         }
         db.close();
-        return user;
+        return userBean;
     }
 
-    public User queryUser(int isLogin){
+    public UserBean queryUser(int isLogin){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
 //        String[] columns={"_id","user_name","password", "is_login"};//你要的数据
 //        String[] selectionArgs={Integer.toString(isLogin)};//具体的条件,注意要对应条件字段
@@ -128,18 +128,18 @@ public class DBHelper extends SQLiteOpenHelper {
         Cursor cursor = db.rawQuery("select * from user where is_login=?", new String[]{Integer.toString(isLogin)});
         // 游标只要不是在最后一行之后，就一直循环
         cursor.moveToFirst();
-        User user = null;
+        UserBean userBean = null;
         while (!cursor.isAfterLast()){
-            user = new User();
-            user.set_id(cursor.getLong(0));
-            user.setUser_name(cursor.getString(1));
-            user.setPassword(cursor.getString(2));
-            user.setIs_login(cursor.getInt(3));
+            userBean = new UserBean();
+            userBean.set_id(cursor.getLong(0));
+            userBean.setUser_name(cursor.getString(1));
+            userBean.setPassword(cursor.getString(2));
+            userBean.setIs_login(cursor.getInt(3));
             // 将游标移到下一行
             cursor.moveToNext();
         }
         db.close();
-        return user;
+        return userBean;
     }
 }
 

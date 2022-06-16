@@ -1,4 +1,4 @@
-package com.example.androiddemo;
+package com.example.androiddemo.ui.adapter;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
@@ -7,10 +7,10 @@ import androidx.fragment.app.FragmentPagerAdapter;
 
 import java.util.List;
 
-public class MyFragmentPagerAdapter extends FragmentPagerAdapter {
+public class MainFragmentPagerAdapter extends FragmentPagerAdapter {
     private List<Fragment> fragmentList;
 
-    public MyFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
+    public MainFragmentPagerAdapter(FragmentManager fm, List<Fragment> fragmentList) {
         super(fm, BEHAVIOR_RESUME_ONLY_CURRENT_FRAGMENT);
         this.fragmentList = fragmentList;
     }

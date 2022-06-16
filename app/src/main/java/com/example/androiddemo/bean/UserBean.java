@@ -1,6 +1,6 @@
 package com.example.androiddemo.bean;
 
-public class User {
+public class UserBean {
     private long _id;
     private String user_name;
     private String password;
