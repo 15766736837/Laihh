@@ -10,4 +10,10 @@
         <item name="android:textColor">@color/color_3352DB</item>
         <item name="android:textSize">12sp</item>
     </style>
+
+    <!-- 圆形图片 -->
+    <style name="circleImageStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
+    </style>
 </resources>
