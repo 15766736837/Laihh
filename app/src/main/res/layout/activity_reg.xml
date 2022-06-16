@@ -1,0 +1,95 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".ui.login.LoginActivity">
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="234dp"
+        android:background="@mipmap/img_login_bg" />
+
+    <ImageView
+        android:id="@+id/ivBack"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="18dp"
+        android:layout_marginTop="54dp"
+        android:padding="2dp"
+        android:src="@mipmap/icon_nav_back_white" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ivBack"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="18dp"
+        android:text="账号注册"
+        android:textColor="@color/white"
+        android:textSize="24sp"
+        android:textStyle="bold" />
+
+    <androidx.appcompat.widget.LinearLayoutCompat
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="196dp"
+        android:background="@drawable/shape_top_white_rounded_40"
+        android:orientation="vertical">
+
+        <EditText
+            android:id="@+id/etName"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="80dp"
+            android:background="@drawable/shape_login_edittext_bg"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-*"
+            android:hint="请输入账号名"
+            android:paddingLeft="16dp"
+            android:textColor="@color/color_303133"
+            android:textColorHint="@color/color_CCCCCC"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etPwd"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_login_edittext_bg"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-*"
+            android:hint="输入登录密码"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            android:textColor="@color/color_303133"
+            android:textColorHint="@color/color_CCCCCC"
+            android:textSize="14sp" />
+
+        <EditText
+            android:id="@+id/etConfirmPwd"
+            android:layout_width="match_parent"
+            android:layout_height="44dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/shape_login_edittext_bg"
+            android:digits="0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ@._-*"
+            android:hint="再次输入登录密码"
+            android:inputType="textPassword"
+            android:paddingLeft="16dp"
+            android:textColor="@color/color_303133"
+            android:textColorHint="@color/color_CCCCCC"
+            android:textSize="14sp" />
+
+        <Button
+            android:id="@+id/btnReg"
+            android:layout_width="match_parent"
+            android:layout_height="48dp"
+            android:layout_marginHorizontal="20dp"
+            android:layout_marginTop="32dp"
+            android:background="@drawable/selector_login_btn"
+            android:enabled="false"
+            android:text="注册"
+            android:textColor="@color/white" />
+    </androidx.appcompat.widget.LinearLayoutCompat>
+</RelativeLayout>
