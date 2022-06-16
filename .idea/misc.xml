@@ -3,6 +3,9 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/android/demo/Android Demo/app/src/main/res/drawable/selector_icon_home.xml" value="0.155" />
+        <entry key="..\:/android/demo/Android Demo/app/src/main/res/drawable/selector_icon_me.xml" value="0.155" />
+        <entry key="..\:/android/demo/Android Demo/app/src/main/res/layout/activity_main.xml" value="0.33" />
         <entry key="..\:/android/demo/Android Demo/app/src/main/res/layout/activity_reg.xml" value="0.358695652173913" />
       </map>
     </option>

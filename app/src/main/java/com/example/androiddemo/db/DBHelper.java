@@ -72,29 +72,6 @@ public class DBHelper extends SQLiteOpenHelper {
         return i;
     }
 
-/*    public ArrayList<String> queryUserName(){
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-        // 参数1：table_name
-        // 参数2：columns 要查询出来的列名。相当于 select  *** from table语句中的 ***部分
-        // 参数3：selection 查询条件字句，在条件子句允许使用占位符“?”表示条件值
-        // 参数4：selectionArgs ：对应于 selection参数 占位符的值
-        // 参数5：groupby 相当于 select *** from table where && group by ... 语句中 ... 的部分
-        // 参数6：having 相当于 select *** from table where && group by ...having %%% 语句中 %%% 的部分
-        // 参数7：orderBy ：相当于 select  ***from ？？  where&& group by ...having %%% order by@@语句中的@@ 部分，如： personid desc（按person 降序）
-        Cursor cursor = db.query(TB_NAME, null, null, null, null, null, null);
-        ArrayList<String> userNameList = new ArrayList();
-        // 将游标移到开头
-        cursor.moveToFirst();
-        // 游标只要不是在最后一行之后，就一直循环
-        while (!cursor.isAfterLast()){
-            userNameList.add(cursor.getString(1));
-            // 将游标移到下一行
-            cursor.moveToNext();
-        }
-        db.close();
-        return userNameList;
-    }*/
-
     public void updateUser(long _id, int is_login){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("update user set is_login=? where _id=?",new Object[]{is_login,_id});
@@ -122,9 +99,6 @@ public class DBHelper extends SQLiteOpenHelper {
 
     public UserBean queryUser(int isLogin){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
-//        String[] columns={"_id","user_name","password", "is_login"};//你要的数据
-//        String[] selectionArgs={Integer.toString(isLogin)};//具体的条件,注意要对应条件字段
-//        Cursor cursor = db.query(TB_NAME, columns, "is_login", selectionArgs, null, null, null);
         Cursor cursor = db.rawQuery("select * from user where is_login=?", new String[]{Integer.toString(isLogin)});
         // 游标只要不是在最后一行之后，就一直循环
         cursor.moveToFirst();
