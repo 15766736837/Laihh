@@ -4,6 +4,7 @@ public class UserBean {
     private long _id;
     private String user_name;
     private String password;
+    private String avatar_url;
     private int is_login;
 
     public long get_id() {
@@ -36,5 +37,13 @@ public class UserBean {
 
     public void setIs_login(int is_login) {
         this.is_login = is_login;
+    }
+
+    public String getAvatarUrl() {
+        return avatar_url;
+    }
+
+    public void setAvatarUrl(String avatarUrl) {
+        this.avatar_url = avatarUrl;
     }
 }

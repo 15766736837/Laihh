@@ -45,6 +45,7 @@ public class DBHelper extends SQLiteOpenHelper {
                 TB_NAME + " ( _id integer primary key autoincrement," +
                 "user_name varchar," +
                 "password varchar," +
+                "avatar_url varchar," +
                 "is_login INTEGER DEFAULT 0" +
                 ") ");
     }
@@ -78,6 +79,12 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateUser(long id, String avatar_url){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("update user set avatar_url=? where _id=?",new Object[]{avatar_url, id});
+        db.close();
+    }
+
     public UserBean queryUser(String user_name){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from user where user_name=?", new String[]{user_name});
@@ -89,7 +96,8 @@ public class DBHelper extends SQLiteOpenHelper {
             userBean.set_id(cursor.getLong(0));
             userBean.setUser_name(cursor.getString(1));
             userBean.setPassword(cursor.getString(2));
-            userBean.setIs_login(cursor.getInt(3));
+            userBean.setAvatarUrl(cursor.getString(3));
+            userBean.setIs_login(cursor.getInt(4));
             // 将游标移到下一行
             cursor.moveToNext();
         }
@@ -108,7 +116,8 @@ public class DBHelper extends SQLiteOpenHelper {
             userBean.set_id(cursor.getLong(0));
             userBean.setUser_name(cursor.getString(1));
             userBean.setPassword(cursor.getString(2));
-            userBean.setIs_login(cursor.getInt(3));
+            userBean.setAvatarUrl(cursor.getString(3));
+            userBean.setIs_login(cursor.getInt(4));
             // 将游标移到下一行
             cursor.moveToNext();
         }

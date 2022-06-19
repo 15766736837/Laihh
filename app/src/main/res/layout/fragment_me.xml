@@ -12,6 +12,7 @@
         android:paddingTop="44dp">
 
         <ImageView
+            android:id="@+id/ivSetting"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
@@ -30,6 +31,7 @@
             android:id="@+id/ivAvatar"
             android:layout_width="48dp"
             android:layout_height="48dp"
+            android:scaleType="fitXY"
             android:src="@mipmap/img_my_portrait"
             app:shapeAppearance="@style/circleImageStyle" />
 
