@@ -20,7 +20,7 @@
         android:layout_alignParentBottom="true"
         android:background="@color/white"
         app:labelVisibilityMode="labeled"
-        app:itemTextAppearanceActive="@style/bottom_selected_text"
-        app:itemTextAppearanceInactive="@style/bottom_normal_text"
+        app:itemIconTint="@drawable/selector_icon_color"
+        app:itemTextColor="@drawable/selector_icon_color"
         app:menu="@menu/bottomnavigationmenu" />
 </RelativeLayout>
