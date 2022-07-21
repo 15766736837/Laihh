@@ -67,8 +67,6 @@ public class MainActivity extends BaseActivity {
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(mFragmentList.size());
-
-        getLifecycle().addObserver(new AdvertisingManage());
     }
 
     @Override

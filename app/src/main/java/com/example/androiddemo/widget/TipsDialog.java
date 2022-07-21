@@ -9,14 +9,15 @@ import android.widget.TextView;
 
 import com.example.androiddemo.R;
 
+import androidx.activity.ComponentActivity;
 import androidx.annotation.NonNull;
 import androidx.annotation.StringRes;
+import androidx.lifecycle.DefaultLifecycleObserver;
+import androidx.lifecycle.LifecycleObserver;
+import androidx.lifecycle.LifecycleOwner;
 
 
-public class TipsDialog extends Dialog implements View.OnClickListener {
-
-
-
+public class TipsDialog extends Dialog implements View.OnClickListener, DefaultLifecycleObserver {
     private TextView mTitleTips;
     private TextView mContentTips;
     private TextView mBtnLeft;
@@ -24,24 +25,18 @@ public class TipsDialog extends Dialog implements View.OnClickListener {
     private String mTitle = "";
     private TipsDialogListener mListener;
     private TipsDialogExtListener mExtListener;
-    private Activity activity;
+    private ComponentActivity activity;
     private boolean autoDismiss = false;
 
-    public TipsDialog(@NonNull Activity activity) {
-        super(activity);
-        this.activity = activity;
-        initView();
+    public TipsDialog(@NonNull ComponentActivity activity) {
+        this(activity, null);
     }
 
-    public TipsDialog(Activity activity, String title) {
+    public TipsDialog(ComponentActivity activity, String title) {
         super(activity);
         this.activity = activity;
         mTitle = title;
-        initView();
-    }
-
-    public TipsDialog(@NonNull Activity activity, int themeResId) {
-        super(activity, themeResId);
+        activity.getLifecycle().addObserver(this);
         initView();
     }
 
@@ -218,5 +213,10 @@ public class TipsDialog extends Dialog implements View.OnClickListener {
         void onCancel(TipsDialog dialog);
 
         void onConfirm(TipsDialog dialog);
+    }
+
+    @Override
+    public void onDestroy(@NonNull LifecycleOwner owner) {
+        dismiss();
     }
 }
