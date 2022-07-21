@@ -47,11 +47,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
-        UserBean userBean = DBHelper.getInstance(this).queryUser(1);
-        if(userBean != null){
-            startActivity(new Intent(this, MainActivity.class));
-            finish();
-        }
+
     }
 
     private void setEditTextTextChangedListener(EditText et) {

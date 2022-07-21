@@ -15,6 +15,7 @@ import com.example.androiddemo.ui.adapter.MainFragmentPagerAdapter;
 import com.example.androiddemo.R;
 import com.example.androiddemo.ui.fragment.HomeFragment;
 import com.example.androiddemo.ui.fragment.MeFragment;
+import com.example.androiddemo.utils.AdvertisingManage;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -66,6 +67,8 @@ public class MainActivity extends BaseActivity {
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
         mViewpager.setAdapter(pagerAdapter);
         mViewpager.setOffscreenPageLimit(mFragmentList.size());
+
+        getLifecycle().addObserver(new AdvertisingManage());
     }
 
     @Override

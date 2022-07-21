@@ -13,6 +13,13 @@
         <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/selector_color_home.xml" value="0.118" />
         <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/selector_icon_home.xml" value="0.1125" />
         <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/selector_icon_me.xml" value="0.118" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/shape_advertising_bg.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/shape_login_btn_selected_bg.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/shape_login_btn_unselected_bg.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/shape_login_edittext_bg.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/shape_top_white_rounded_40.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/drawable/tips_dialog_conner_bg.xml" value="0.125" />
+        <entry key="..\:/android/demo/Laihh/app/src/main/res/layout/activity_advertising.xml" value="0.22" />
         <entry key="..\:/android/demo/Laihh/app/src/main/res/layout/activity_main.xml" value="0.16574074074074074" />
         <entry key="..\:/android/demo/Laihh/app/src/main/res/layout/fragment_home.xml" value="0.23007246376811594" />
         <entry key="..\:/android/demo/Laihh/app/src/main/res/menu/bottomnavigationmenu.xml" value="0.3111111111111111" />
