@@ -11,7 +11,14 @@
     <color name="color_CCCCCC">#CCCCCC</color>
     <color name="color_3352DB">#3352DB</color>
     <color name="colorPrimary">#3352DB</color>
+    <color name="textPrimary">#262936</color>
+    <color name="colorTertiary">#CED6EB</color>
+    <color name="colorDivider">#E4E8EB</color>
+    <color name="colorBg">#F0F3FA</color>
+    <color name="divider_drawable_color">@color/color_F5F6FA</color>
+
     <color name="color_303133">#303133</color>
+    <color name="color_878A99">#878A99</color>
     <color name="color_F5F6FA">#F5F6FA</color>
     <color name="color_909399">#909399</color>
     <color name="color_F53434">#F53434</color>

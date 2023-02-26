@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androiddemo.app.BaseActivity;
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.R;
 import com.example.androiddemo.bean.UserBean;
@@ -21,15 +22,19 @@ import com.example.androiddemo.db.DBHelper;
  */
 public class LoginActivity extends BaseActivity implements View.OnClickListener {
     private EditText mEtPwd, mEtName;
-    private TextView mBtnReg;
+    private TextView mBtnReg, tvUser, tvAdmin;
     private Button mBtnLogin;
+    private boolean isUser = true; //true = 用户 false = 管理员
 
     @Override
     public void initEvent() {
         setEditTextTextChangedListener(mEtName);
         setEditTextTextChangedListener(mEtPwd);
+        //申明按钮点击事件回掉
         mBtnReg.setOnClickListener(this);
         mBtnLogin.setOnClickListener(this);
+        tvUser.setOnClickListener(this);
+        tvAdmin.setOnClickListener(this);
     }
 
     @Override
@@ -38,6 +43,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         mBtnLogin = findViewById(R.id.btnLogin);
         mEtName = findViewById(R.id.etName);
         mEtPwd = findViewById(R.id.etPwd);
+        tvUser = findViewById(R.id.tvUser);
+        tvAdmin = findViewById(R.id.tvAdmin);
+
     }
 
     @Override
@@ -73,12 +81,24 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         });
     }
 
+    /**
+     * 按钮点击事件
+     * @param view The view that was clicked.
+     */
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tvUser:
+                setTabStyle(true);
+                break;
+            case R.id.tvAdmin:
+                setTabStyle(false);
+                break;
+            //注册按钮的事件回掉
             case R.id.btnReg:
                 startActivity(new Intent(this, RegActivity.class));
                 break;
+            //登陆按钮的事件回掉
             case R.id.btnLogin:
                 UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
                 if (userBean == null) {
@@ -91,10 +111,22 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
                 userBean.setIs_login(1);
                 DBHelper.getInstance(this).updateUser(userBean.get_id(), 1);
+                BaseApplication.userBean = userBean;
                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MainActivity.class));
                 finish();
                 break;
         }
+    }
+
+    /**
+     * 设置用户/管理员切换按钮的样式
+     */
+    private void setTabStyle(boolean isUser) {
+        this.isUser = isUser;
+        tvUser.setBackground(isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvAdmin.setBackground(!isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvUser.setTextColor(getResources().getColor(isUser ? R.color.white : R.color.textPrimary));
+        tvAdmin.setTextColor(getResources().getColor(!isUser ? R.color.white : R.color.textPrimary));
     }
 }

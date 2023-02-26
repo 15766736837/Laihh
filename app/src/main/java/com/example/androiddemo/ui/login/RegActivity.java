@@ -7,6 +7,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androiddemo.app.BaseActivity;
@@ -18,26 +19,38 @@ import com.example.androiddemo.db.DBHelper;
  * 注册
  */
 public class RegActivity extends BaseActivity implements View.OnClickListener {
-    private EditText mEtPwd, mEtConfirmPwd, mEtName;
+    private EditText mEtPwd, mEtConfirmPwd, mEtName, mEtClass, mEtStudentNumber, mEtStudentName;
     private Button mBtnReg;
     private ImageView mIvBack;
+    private TextView tvUser, tvAdmin;
+    private boolean isUser = true; //true = 用户 false = 管理员
 
     @Override
     public void initEvent() {
+        setEditTextTextChangedListener(mEtClass);
+        setEditTextTextChangedListener(mEtStudentNumber);
+        setEditTextTextChangedListener(mEtStudentName);
         setEditTextTextChangedListener(mEtName);
         setEditTextTextChangedListener(mEtPwd);
         setEditTextTextChangedListener(mEtConfirmPwd);
         mBtnReg.setOnClickListener(this);
         mIvBack.setOnClickListener(this);
+        tvUser.setOnClickListener(this);
+        tvAdmin.setOnClickListener(this);
     }
 
     @Override
     protected void initView() {
         mIvBack = findViewById(R.id.ivBack);
+        mEtClass = findViewById(R.id.etClass);
+        mEtStudentNumber = findViewById(R.id.etStudentNumber);
+        mEtStudentName = findViewById(R.id.etStudentName);
         mEtName = findViewById(R.id.etName);
         mEtPwd = findViewById(R.id.etPwd);
         mEtConfirmPwd = findViewById(R.id.etConfirmPwd);
         mBtnReg = findViewById(R.id.btnReg);
+        tvUser = findViewById(R.id.tvUser);
+        tvAdmin = findViewById(R.id.tvAdmin);
     }
 
     @Override
@@ -59,8 +72,14 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-                mBtnReg.setEnabled(!"".equals(mEtPwd.getText().toString()) && !"".equals(mEtConfirmPwd.getText().toString())
-                        && !"".equals(mEtName.getText().toString()));
+                mBtnReg.setEnabled(
+                        !"".equals(mEtClass.getText().toString()) &&
+                                !"".equals(mEtStudentNumber.getText().toString()) &&
+                                !"".equals(mEtStudentName.getText().toString()) &&
+                                !"".equals(mEtPwd.getText().toString()) &&
+                                !"".equals(mEtConfirmPwd.getText().toString()) &&
+                                !"".equals(mEtName.getText().toString())
+                );
             }
 
             @Override
@@ -73,6 +92,12 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
+            case R.id.tvUser:
+                setTabStyle(true);
+                break;
+            case R.id.tvAdmin:
+                setTabStyle(false);
+                break;
             case R.id.ivBack:
                 finish();
                 break;
@@ -89,7 +114,11 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
                 }
 
                 //注册信息储存到数据库
-                long insert = DBHelper.getInstance(this).insert(mEtName.getText().toString(), mEtPwd.getText().toString());
+                long insert = DBHelper.getInstance(this).insert(
+                        mEtName.getText().toString(), mEtPwd.getText().toString(),
+                        isUser, mEtClass.getText().toString(), mEtStudentNumber.getText().toString(),
+                        mEtStudentName.getText().toString()
+                );
                 if (insert != -1) {
                     Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
                     finish();
@@ -98,5 +127,16 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
                 }
                 break;
         }
+    }
+
+    /**
+     * 设置用户/管理员切换按钮的样式
+     */
+    private void setTabStyle(boolean isUser) {
+        this.isUser = isUser;
+        tvUser.setBackground(isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvAdmin.setBackground(!isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvUser.setTextColor(getResources().getColor(isUser ? R.color.white : R.color.textPrimary));
+        tvAdmin.setTextColor(getResources().getColor(!isUser ? R.color.white : R.color.textPrimary));
     }
 }

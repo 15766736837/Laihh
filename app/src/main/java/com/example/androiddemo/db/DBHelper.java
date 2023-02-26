@@ -46,7 +46,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "user_name varchar," +
                 "password varchar," +
                 "avatar_url varchar," +
-                "is_login INTEGER DEFAULT 0" +
+                "is_login INTEGER DEFAULT 0," +
+                "is_user INTEGER DEFAULT 1," +
+                "user_class varchar," +
+                "student_number varchar," +
+                "student_name varchar" +
                 ") ");
     }
 
@@ -56,13 +60,17 @@ public class DBHelper extends SQLiteOpenHelper {
         onCreate(dbHelper.getWritableDatabase());
     }
 
-    public long insert(String user_name, String password) {
+    public long insert(String user_name, String password, boolean isUser, String userClass, String studentNumber, String studentName) {
         // 通过DBHelper类获取一个读写的SQLiteDatabase对象
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         // 创建ContentValue设置参数
         ContentValues contentValues = new ContentValues();
         contentValues.put("user_name", user_name);
         contentValues.put("password", password);
+        contentValues.put("is_user", isUser ? 1 : 0);
+        contentValues.put("user_class", userClass);
+        contentValues.put("student_number", studentNumber);
+        contentValues.put("student_name", studentName);
         // 插入数据
         // insert方法参数1：要插入的表名
         // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
