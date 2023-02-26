@@ -1,3 +1,2 @@
 # Laihh
-Android基础模板
-已接入登录-注册-首页模块
+Android投票App 无网络本地版本
