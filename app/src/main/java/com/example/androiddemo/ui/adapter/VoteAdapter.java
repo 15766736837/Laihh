@@ -13,7 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.androiddemo.R;
-import com.example.androiddemo.bean.VoteBean;
+import com.example.androiddemo.bean.VoteItemBean;
 
 import java.util.List;
 
@@ -21,13 +21,13 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
-    private List<VoteBean> voteList;
+    private List<VoteItemBean> voteList;
     public boolean isImg = false;   //控制是图片还是文本
     private OnImgClick listener;
     private Context context;
 
     //TextAdapter构造函数
-    public VoteAdapter(List<VoteBean> list, Context context) {
+    public VoteAdapter(List<VoteItemBean> list, Context context) {
         voteList = list;
         this.context = context;
     }
@@ -42,7 +42,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder viewHolder, int position) {
-        VoteBean voteBean = voteList.get(position);
+        VoteItemBean voteBean = voteList.get(position);
         //如果不是最后一项就显示投票选项，如果是最后一项就显示添加选项的样式
         viewHolder.rlDelete.setVisibility(position < voteList.size() - 1 ? View.VISIBLE : View.GONE);
         viewHolder.rlAdd.setVisibility(position < voteList.size() - 1 ? View.GONE : View.VISIBLE);
@@ -55,8 +55,8 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
                     listener.click(position);
             });
             //设置选择的图片
-            if(voteBean.getImg() != null && !voteBean.getImg().isEmpty()){
-                Glide.with(context).load(voteBean.getImg()).into(viewHolder.ivImg);
+            if(voteBean.getUrl() != null && !voteBean.getUrl().isEmpty()){
+                Glide.with(context).load(voteBean.getUrl()).into(viewHolder.ivImg);
             }else{
                 viewHolder.ivImg.setImageResource(R.mipmap.add_img);
             }
@@ -110,7 +110,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
         viewHolder.rlAdd.setOnClickListener(v -> {
             if(voteList.size() < 11){
                 //添加新的选项
-                voteList.add(voteList.size() - 1, new VoteBean());
+                voteList.add(voteList.size() - 1, new VoteItemBean());
                 //刷新列表
                 notifyDataSetChanged();
             }else {
@@ -140,7 +140,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
             super(view);
             //获取RecyclerView布局的子项布局中的所有控件id
             ivDeleteVote = view.findViewById(R.id.ivDeleteVote);
-            etContent = view.findViewById(R.id.etContent);
+            etContent = view.findViewById(R.id.etTitle);
             rlAdd = view.findViewById(R.id.rlAdd);
             rlDelete = view.findViewById(R.id.rlDelete);
             ivImg = view.findViewById(R.id.ivImg);

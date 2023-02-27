@@ -37,6 +37,9 @@ public final class AmountView extends LinearLayout implements View.OnClickListen
     public void setMinAmount(int minAmount) {
         this.minAmount = minAmount;
     }
+    public String getAmount() {
+        return etAmount.getText().toString();
+    }
 
     public void onClick(@NotNull View v) {
         int i = v.getId();

@@ -62,6 +62,7 @@
                 android:textColor="@color/textPrimary"/>
 
             <EditText
+                android:id="@+id/etTitle"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/white"
@@ -78,6 +79,7 @@
                 android:background="@color/colorDivider"/>
 
             <EditText
+                android:id="@+id/etDescribe"
                 android:layout_width="match_parent"
                 android:layout_height="60dp"
                 android:background="@color/white"
@@ -177,10 +179,11 @@
                     android:id="@+id/tvDate"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
-                    android:text="选择截止日期"
+                    android:hint="选择截止日期"
                     android:gravity="center_vertical"
                     android:layout_centerVertical="true"
                     android:textSize="14sp"
+                    android:textColorHint="@color/color_878A99"
                     android:layout_alignParentRight="true"
                     android:textColor="@color/textPrimary"/>
             </RelativeLayout>
@@ -240,6 +243,7 @@
                     android:layout_centerVertical="true"/>
 
                 <com.example.androiddemo.widget.AmountView
+                    android:id="@+id/avMin"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -280,6 +284,7 @@
                     android:layout_centerVertical="true"/>
 
                 <com.example.androiddemo.widget.AmountView
+                    android:id="@+id/avMax"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
@@ -298,7 +303,7 @@
             </RelativeLayout>
 
             <Button
-                android:id="@+id/btnLogin"
+                android:id="@+id/btnSubmit"
                 android:layout_width="match_parent"
                 android:layout_height="48dp"
                 android:layout_marginHorizontal="20dp"

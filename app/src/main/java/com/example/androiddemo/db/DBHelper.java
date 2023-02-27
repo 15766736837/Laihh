@@ -8,10 +8,18 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.bean.UserBean;
+import com.example.androiddemo.bean.VoteBean;
+import com.example.androiddemo.bean.VoteItemBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TB_NAME = "user";
+    private static final String TB_VOTE = "vote";
+    private static final String TB_VOTE_ITEM = "vote_item";
     private volatile static DBHelper dbHelper;
     public static final String DB_NAME = "AppDatabase.db";
     public static final int DB_VERSION = 1;
@@ -51,6 +59,25 @@ public class DBHelper extends SQLiteOpenHelper {
                 "user_class varchar," +
                 "student_number varchar," +
                 "student_name varchar" +
+                ") ");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                TB_VOTE + " ( _id integer primary key autoincrement," +
+                "create_id INTEGER DEFAULT 0," +
+                "title varchar," +
+                "describe varchar," +
+                "vote_url varchar," +
+                "type INTEGER DEFAULT 0," +
+                "end_time INTEGER DEFAULT 0," +
+                "single INTEGER DEFAULT 0," +
+                "min INTEGER DEFAULT 1," +
+                "max INTEGER DEFAULT 1" +
+                ") ");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                TB_VOTE_ITEM + " ( _id INTEGER DEFAULT 0," +
+                "content varchar," +
+                "url varchar" +
                 ") ");
     }
 
@@ -126,11 +153,115 @@ public class DBHelper extends SQLiteOpenHelper {
             userBean.setPassword(cursor.getString(2));
             userBean.setAvatarUrl(cursor.getString(3));
             userBean.setIs_login(cursor.getInt(4));
+            userBean.setIs_user(cursor.getInt(5));
+            userBean.setUser_class(cursor.getString(6));
+            userBean.setStudent_number(cursor.getString(7));
+            userBean.setStudent_name(cursor.getString(8));
             // 将游标移到下一行
             cursor.moveToNext();
         }
         db.close();
         return userBean;
+    }
+
+
+    /**************************************************/
+    /*****************投票信息的数据库操作*****************/
+    /**************************************************/
+    //插入一条投票数据
+    public long insertVote(VoteBean bean) {
+        // 通过DBHelper类获取一个读写的SQLiteDatabase对象
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // 创建ContentValue设置参数
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("create_id", BaseApplication.userBean.get_id());
+        contentValues.put("title", bean.getTitle());
+        contentValues.put("describe", bean.getDescribe());
+        contentValues.put("vote_url", bean.getVote_url());
+        contentValues.put("type", bean.getType());
+        contentValues.put("end_time", bean.getEnd_time());
+        contentValues.put("single", bean.getSingle());
+        contentValues.put("min", bean.getMax());
+        // 插入数据
+        // insert方法参数1：要插入的表名
+        // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
+        // insert方法参数3：contentValue
+        long i = db.insert(TB_VOTE, "create_id", contentValues);
+        // 释放连接
+        db.close();
+        return i;
+    }
+
+    public long insertVoteItem(VoteItemBean bean) {
+        // 通过DBHelper类获取一个读写的SQLiteDatabase对象
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // 创建ContentValue设置参数
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("_id", bean.get_id());
+        contentValues.put("content", bean.getContent());
+        contentValues.put("url", bean.getUrl());
+        // 插入数据
+        // insert方法参数1：要插入的表名
+        // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
+        // insert方法参数3：contentValue
+        long i = db.insert(TB_VOTE_ITEM, "content", contentValues);
+        // 释放连接
+        db.close();
+        return i;
+    }
+
+    //如果是管理员的话 就只查询出自己创建的投票记录
+    public List<VoteBean> queryMeCreateVote(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from vote where create_id=?", new String[]{Long.toString(BaseApplication.userBean.get_id())});
+        // 游标只要不是在最后一行之后，就一直循环
+        cursor.moveToFirst();
+        List<VoteBean> voteBeanList = new ArrayList<>();
+        while (!cursor.isAfterLast()){
+            VoteBean voteBean = new VoteBean();
+            voteBean.set_id(cursor.getLong(0));
+            voteBean.setCreate_id(cursor.getLong(1));
+            voteBean.setTitle(cursor.getString(2));
+            voteBean.setDescribe(cursor.getString(3));
+            voteBean.setVote_url(cursor.getString(4));
+            voteBean.setType(cursor.getInt(5));
+            voteBean.setEnd_time(cursor.getLong(6));
+            voteBean.setSingle(cursor.getInt(7));
+            voteBean.setMin(cursor.getInt(8));
+            voteBean.setMax(cursor.getInt(9));
+            voteBeanList.add(voteBean);
+            // 将游标移到下一行
+            cursor.moveToNext();
+        }
+//        db.close();
+        return voteBeanList;
+    }
+
+    //如果是用户就查出所有的投票记录
+    public List<VoteBean> queryAllVote(){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from vote", new String[]{});
+        // 游标只要不是在最后一行之后，就一直循环
+        cursor.moveToFirst();
+        List<VoteBean> voteBeanList = new ArrayList<>();
+        while (!cursor.isAfterLast()){
+            VoteBean voteBean = new VoteBean();
+            voteBean.set_id(cursor.getLong(0));
+            voteBean.setCreate_id(cursor.getLong(1));
+            voteBean.setTitle(cursor.getString(2));
+            voteBean.setDescribe(cursor.getString(3));
+            voteBean.setVote_url(cursor.getString(4));
+            voteBean.setType(cursor.getInt(5));
+            voteBean.setEnd_time(cursor.getLong(6));
+            voteBean.setSingle(cursor.getInt(7));
+            voteBean.setMin(cursor.getInt(8));
+            voteBean.setMax(cursor.getInt(9));
+            voteBeanList.add(voteBean);
+            // 将游标移到下一行
+            cursor.moveToNext();
+        }
+//        db.close();
+        return voteBeanList;
     }
 }
 

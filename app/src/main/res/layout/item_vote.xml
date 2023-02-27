@@ -30,7 +30,7 @@
             android:scaleType="fitXY"/>
 
         <EditText
-            android:id="@+id/etContent"
+            android:id="@+id/etTitle"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_toRightOf="@id/ivDeleteVote"

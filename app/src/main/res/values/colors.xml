@@ -13,6 +13,7 @@
     <color name="colorPrimary">#3352DB</color>
     <color name="textPrimary">#262936</color>
     <color name="colorTertiary">#CED6EB</color>
+    <color name="color_545766">#545766</color>
     <color name="colorDivider">#E4E8EB</color>
     <color name="colorBg">#F0F3FA</color>
     <color name="divider_drawable_color">@color/color_F5F6FA</color>

@@ -3,6 +3,7 @@ package com.example.androiddemo.app;
 import android.app.Application;
 
 import com.example.androiddemo.bean.UserBean;
+import com.example.androiddemo.db.DBHelper;
 import com.tencent.mmkv.MMKV;
 
 public class BaseApplication extends Application {
@@ -14,5 +15,6 @@ public class BaseApplication extends Application {
       super.onCreate();
       app = this;
       MMKV.initialize(this);
+      userBean = DBHelper.getInstance(this).queryUser(1);
    }
 }
