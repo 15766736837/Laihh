@@ -1,6 +1,8 @@
 package com.example.androiddemo.bean;
 
-public class VoteBean {
+import java.io.Serializable;
+
+public class VoteBean implements Serializable {
     private long _id;
     private long create_id;
     private String title;

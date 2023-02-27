@@ -21,6 +21,7 @@ import com.example.androiddemo.bean.VoteBean;
 import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.ui.activity.AddVoteActivity;
 import com.example.androiddemo.ui.activity.SettingActivity;
+import com.example.androiddemo.ui.activity.VoteDetailsActivity;
 import com.example.androiddemo.ui.adapter.HomeVoteAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -68,6 +69,11 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }
         //加载列表数据
         homeVoteAdapter = new HomeVoteAdapter(voteBeans, getContext());
+        homeVoteAdapter.setOnItemClick(voteBean -> {
+            Intent intent = new Intent(getContext(), VoteDetailsActivity.class);
+            intent.putExtra("data", voteBean);
+            startActivity(intent);
+        });
         recyclerView.setAdapter(homeVoteAdapter);
     }
 

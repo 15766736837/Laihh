@@ -263,5 +263,24 @@ public class DBHelper extends SQLiteOpenHelper {
 //        db.close();
         return voteBeanList;
     }
+
+    public List<VoteItemBean> queryVoteItem(long id){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from vote_item where _id=?", new String[]{Long.toString(id)});
+        // 游标只要不是在最后一行之后，就一直循环
+        cursor.moveToFirst();
+        List<VoteItemBean> voteBeanList = new ArrayList<>();
+        while (!cursor.isAfterLast()){
+            VoteItemBean voteBean = new VoteItemBean();
+            voteBean.set_id(cursor.getLong(0));
+            voteBean.setContent(cursor.getString(1));
+            voteBean.setUrl(cursor.getString(2));
+            voteBeanList.add(voteBean);
+            // 将游标移到下一行
+            cursor.moveToNext();
+        }
+//        db.close();
+        return voteBeanList;
+    }
 }
 

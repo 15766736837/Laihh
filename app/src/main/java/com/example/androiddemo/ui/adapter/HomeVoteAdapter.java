@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -19,6 +20,7 @@ import java.util.List;
 public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHolder> {
     private List<VoteBean> voteBeanList;
     private Context context;
+    private OnItemClickListener listener;
 
     public HomeVoteAdapter(List<VoteBean> voteBeanList, Context context) {
         this.voteBeanList = voteBeanList;
@@ -49,6 +51,12 @@ public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHo
             holder.tvStatus.setText("已结束");
             holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.shape_grey));
         }
+        if (listener != null)
+            holder.rlRoot.setOnClickListener(v -> listener.itemClick(voteBean));
+    }
+
+    public void setOnItemClick(OnItemClickListener listener){
+        this.listener = listener;
     }
 
     @Override
@@ -58,6 +66,7 @@ public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHo
 
     //ViewHolder类将子项布局中所有控件绑定为一个对象，该对象包含子项布局的所有控件
     static class ViewHolder extends RecyclerView.ViewHolder {
+        RelativeLayout rlRoot;
         ImageView ivAvatar;
         TextView tvTitle, tvDescribe, tvStatus, tvType;
 
@@ -65,6 +74,7 @@ public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHo
             //父类构造函数
             super(view);
             //获取RecyclerView布局的子项布局中的所有控件id
+            rlRoot = view.findViewById(R.id.rlRoot);
             ivAvatar = view.findViewById(R.id.ivAvatar);
             tvTitle = view.findViewById(R.id.tvTitle);
             tvDescribe = view.findViewById(R.id.tvDescribe);
@@ -72,5 +82,9 @@ public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHo
             tvType = view.findViewById(R.id.tvType);
 
         }
+    }
+
+    public interface OnItemClickListener{
+        void itemClick(VoteBean voteBean);
     }
 }

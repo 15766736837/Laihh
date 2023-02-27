@@ -17,6 +17,14 @@
         <item name="cornerSize">50%</item>
     </style>
 
+    <style name="ProgressBar" parent="@android:style/Widget.ProgressBar.Horizontal">
+        <item name="android:maxHeight">50dip</item>
+        <item name="android:minHeight">8dip</item>
+        <item name="android:indeterminateOnly">false</item>
+        <item name="android:indeterminateDrawable">@android:drawable/progress_indeterminate_horizontal</item>
+        <item name="android:progressDrawable">@drawable/progressbar</item>
+    </style>
+
     <declare-styleable name="AmountView">
         <!-- 左右2边+-按钮的宽度 -->
         <attr name="btnWidth" format="dimension" />
