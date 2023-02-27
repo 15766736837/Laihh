@@ -95,6 +95,16 @@
         android:scaleType="fitXY"/>
 
     <TextView
+        android:id="@+id/tvEndTime"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginTop="10dp"
+        android:textSize="14sp"
+        android:textColor="@color/textPrimary"
+        android:text="截止日期："/>
+
+    <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="选择信息"
@@ -121,6 +131,19 @@
         android:background="@drawable/selector_login_btn"
         android:enabled="true"
         android:text="确定"
+        android:layout_marginBottom="30dp"
+        android:textColor="@color/white" />
+
+    <Button
+        android:id="@+id/btnDelete"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:layout_marginHorizontal="20dp"
+        android:layout_marginTop="32dp"
+        android:background="@drawable/selector_login_btn"
+        android:enabled="true"
+        android:text="删除"
+        android:visibility="gone"
         android:layout_marginBottom="30dp"
         android:textColor="@color/white" />
 </androidx.appcompat.widget.LinearLayoutCompat>

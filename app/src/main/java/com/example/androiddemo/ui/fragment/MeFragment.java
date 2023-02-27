@@ -52,7 +52,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     protected void initContent(Bundle savedInstanceState) {
         mUserBean = DBHelper.getInstance(requireContext()).queryUser(1);
-        mTvName.setText(mUserBean.getUser_name());
+        mTvName.setText(mUserBean.getStudent_name());
         mTvId.setText("ID: " + mUserBean.get_id());
         if (mUserBean.getAvatarUrl() != null && !"".equals(mUserBean.getAvatarUrl()))
             Glide.with(this).load(mUserBean.getAvatarUrl()).into(ivAvatar);

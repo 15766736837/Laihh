@@ -4,7 +4,43 @@ public class VoteItemBean {
     private String content = "";
     private String url = "";
     private int index;
+    private long id;    //自增长主键
     private long _id;
+    private int amount = 0;
+    private String user_ids = "";    //投票的人
+    private boolean is_select;  //是否选中
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public boolean isIs_select() {
+        return is_select;
+    }
+
+    public void setIs_select(boolean is_select) {
+        this.is_select = is_select;
+    }
+
+    public String getUser_ids() {
+        return user_ids;
+    }
+
+    public void setUser_ids(String user_ids) {
+        this.user_ids = user_ids;
+    }
+
+    public int getAmount() {
+        return amount;
+    }
+
+    public void setAmount(int amount) {
+        this.amount = amount;
+    }
 
     public long get_id() {
         return _id;

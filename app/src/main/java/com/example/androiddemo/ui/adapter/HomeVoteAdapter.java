@@ -42,8 +42,7 @@ public class HomeVoteAdapter extends RecyclerView.Adapter<HomeVoteAdapter.ViewHo
         if (voteBean.getDescribe() != null || !"".equals(voteBean.getDescribe()))
             holder.tvDescribe.setText(voteBean.getDescribe());
         holder.tvType.setText(voteBean.getType() == 1 ? "文" : "图");
-        Calendar current = Calendar.getInstance();
-        if (voteBean.getEnd_time() > current.getTimeInMillis()){
+        if (voteBean.getEnd_time() > Calendar.getInstance().getTimeInMillis()){
             //结束时间大于当前时间 表示进行中
             holder.tvStatus.setText("进行中");
             holder.tvStatus.setBackground(context.getResources().getDrawable(R.drawable.shape_blue));
