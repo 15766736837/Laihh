@@ -1,5 +1,6 @@
 package com.example.androiddemo.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -32,7 +33,7 @@ import java.util.List;
 public class VoteDetailsActivity extends BaseActivity implements View.OnClickListener {
 
     private ImageView ivBack, ivImg;
-    private TextView tvTitle, tvStatus, tvDescribe, tvEndTime;
+    private TextView tvTitle, tvStatus, tvDescribe, tvEndTime, tvEdit;
     private RecyclerView recyclerView;
     private Button btnSubmit, btnDelete;
     private VoteItemAdapter voteItemAdapter;
@@ -44,6 +45,7 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
         ivBack.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
         btnDelete.setOnClickListener(this);
+        tvEdit.setOnClickListener(this);
     }
 
     @Override
@@ -51,6 +53,7 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
         ivBack = findViewById(R.id.ivBack);
         ivImg = findViewById(R.id.ivImg);
         tvTitle = findViewById(R.id.tvTitle);
+        tvEdit = findViewById(R.id.tvEdit);
         tvEndTime = findViewById(R.id.tvEndTime);
         tvStatus = findViewById(R.id.tvStatus);
         btnSubmit = findViewById(R.id.btnSubmit);
@@ -70,6 +73,7 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
         voteBean = (VoteBean) getIntent().getSerializableExtra("data");
         btnDelete.setVisibility(BaseApplication.userBean.getIs_user() != 1 ? View.VISIBLE : View.GONE);
         initData();
+        tvEdit.setVisibility(BaseApplication.userBean.getIs_user() == 1 ? View.GONE : View.VISIBLE);
         tvTitle.setText(voteBean.getTitle());
         tvStatus.setText(voteBean.getSingle() == 1 ? "单选" : "多选");
         tvEndTime.setText("截止日期：" + getTime(voteBean.getEnd_time()));
@@ -105,7 +109,7 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
 
     private void initData() {
         voteItemBeans = DBHelper.getInstance(this).queryVoteItem(voteBean.get_id());
-        voteItemAdapter = new VoteItemAdapter(voteItemBeans, this, voteBean.getEnd_time());
+        voteItemAdapter = new VoteItemAdapter(voteItemBeans, this, voteBean);
         recyclerView.setAdapter(voteItemAdapter);
         btnSubmit.setVisibility(View.GONE);
         //投票过 或者 投票时间已截止 或者 是管理员就不再给进行投票 而是显示投票结果
@@ -142,6 +146,12 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
                 DBHelper.getInstance(this).deleteVoteItem(voteBean);
                 Toast.makeText(this, "删除成功", Toast.LENGTH_SHORT).show();
                 finish();
+                break;
+            case R.id.tvEdit:
+                //跳转编辑页面
+                Intent intent = new Intent(this, AddVoteActivity.class);
+                intent.putExtra("data", voteBean);
+                startActivity(intent);
                 break;
             case R.id.btnSubmit:
                 //确认投票按钮

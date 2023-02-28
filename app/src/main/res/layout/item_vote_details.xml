@@ -64,6 +64,60 @@
                 android:layout_marginRight="10dp"/>
         </RelativeLayout>
 
+        <RelativeLayout
+            android:id="@+id/rlImgRoot"
+            android:layout_width="match_parent"
+            android:layout_height="150dp"
+            android:layout_marginTop="10dp">
+
+            <ProgressBar
+                android:id="@+id/imgProgressBar"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                style="@style/ProgressBar"/>
+
+            <ImageView
+                android:id="@+id/ivImgSelect"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:src="@mipmap/icon_cb_not_selected"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"/>
+
+            <ImageView
+                android:id="@+id/ivImg"
+                android:layout_width="120dp"
+                android:layout_height="120dp"
+                android:layout_toRightOf="@id/ivImgSelect"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:scaleType="fitXY"/>
+
+            <TextView
+                android:id="@+id/tvImgScale"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/textPrimary"
+                android:layout_alignParentRight="true"
+                android:text="100%"
+                android:textSize="13sp"
+                android:visibility="gone"
+                android:layout_marginRight="16dp"/>
+
+            <TextView
+                android:id="@+id/tvImgAmount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:textColor="@color/textPrimary"
+                android:layout_toLeftOf="@id/tvImgScale"
+                android:text="1票"
+                android:visibility="gone"
+                android:textSize="13sp"
+                android:layout_marginRight="10dp"/>
+        </RelativeLayout>
+
         <TextView
             android:id="@+id/tvPersonnel"
             android:layout_width="match_parent"

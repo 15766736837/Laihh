@@ -38,6 +38,18 @@
                 android:textColor="@color/color_303133"
                 android:textSize="18sp"
                 android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tvEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_alignParentRight="true"
+                android:paddingRight="16dp"
+                android:text="编辑"
+                android:visibility="gone"
+                android:textSize="14sp"
+                android:textColor="@color/color_545766"/>
         </RelativeLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

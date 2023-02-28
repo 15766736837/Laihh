@@ -13,6 +13,7 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.androiddemo.R;
+import com.example.androiddemo.bean.VoteBean;
 import com.example.androiddemo.bean.VoteItemBean;
 
 import java.util.List;
@@ -22,14 +23,16 @@ import androidx.recyclerview.widget.RecyclerView;
 
 public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
     private List<VoteItemBean> voteList;
+    private VoteBean voteBean = null;
     public boolean isImg = false;   //控制是图片还是文本
     private OnImgClick listener;
     private Context context;
 
     //TextAdapter构造函数
-    public VoteAdapter(List<VoteItemBean> list, Context context) {
+    public VoteAdapter(List<VoteItemBean> list, Context context, VoteBean voteBean) {
         voteList = list;
         this.context = context;
+        this.voteBean = voteBean;
     }
 
 
@@ -96,6 +99,10 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
         }
         //删除按钮的点击事件
         viewHolder.ivDeleteVote.setOnClickListener(v -> {
+            if (voteBean != null){
+                Toast.makeText(v.getContext(), "编辑页面不能删除选项", Toast.LENGTH_SHORT).show();
+                return;
+            }
             //删除选项，最少两个选项
             if (voteList.size() <= 3){
                 Toast.makeText(v.getContext(), "最少两个选项", Toast.LENGTH_SHORT).show();
@@ -108,6 +115,11 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
         });
         //添加按钮的点击事件
         viewHolder.rlAdd.setOnClickListener(v -> {
+            if (voteBean != null){
+                Toast.makeText(v.getContext(), "编辑页面不能增加选项", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
             if(voteList.size() < 11){
                 //添加新的选项
                 voteList.add(voteList.size() - 1, new VoteItemBean());

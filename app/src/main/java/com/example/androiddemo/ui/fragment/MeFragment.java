@@ -15,18 +15,20 @@ import androidx.fragment.app.Fragment;
 import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.example.androiddemo.R;
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.ui.activity.SettingActivity;
+import com.example.androiddemo.ui.activity.VoteTakeNotesActivity;
 
 import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
-    private TextView mTvName;
+    private TextView mTvName, tvTakeNotes;
     private TextView mTvId;
     private ImageView ivAvatar;
     private UserBean mUserBean;
@@ -34,12 +36,14 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     @Override
     public void initEvent() {
         contentView.findViewById(R.id.ivSetting).setOnClickListener(this);
-        ivAvatar.findViewById(R.id.ivAvatar).setOnClickListener(this);
+        ivAvatar.setOnClickListener(this);
+        contentView.findViewById(R.id.rlTakeNotes).setOnClickListener(this);
     }
 
     @Override
     protected void initView() {
         mTvName = contentView.findViewById(R.id.tvName);
+        tvTakeNotes = contentView.findViewById(R.id.tvTakeNotes);
         mTvId = contentView.findViewById(R.id.tvId);
         ivAvatar = contentView.findViewById(R.id.ivAvatar);
     }
@@ -56,6 +60,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         mTvId.setText("ID: " + mUserBean.get_id());
         if (mUserBean.getAvatarUrl() != null && !"".equals(mUserBean.getAvatarUrl()))
             Glide.with(this).load(mUserBean.getAvatarUrl()).into(ivAvatar);
+        tvTakeNotes.setText(BaseApplication.userBean.getIs_user() == 1 ? "我参与的投票" : "我创建的投票");
     }
 
     @Override
@@ -71,6 +76,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         .setSingle(true)  //设置是否单选
                         .canPreview(true) //是否可以预览图片，默认为true
                         .start(requireActivity(), ((MainActivity)requireActivity()).REQUEST_CODE_CHOOSE); // 打开相册
+                break;
+            case R.id.rlTakeNotes:
+                startActivity(new Intent(getContext(), VoteTakeNotesActivity.class));
                 break;
         }
     }

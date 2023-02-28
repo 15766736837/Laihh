@@ -40,6 +40,9 @@ public final class AmountView extends LinearLayout implements View.OnClickListen
     public String getAmount() {
         return etAmount.getText().toString();
     }
+    public void setAmount(int amount) {
+        etAmount.setText(amount + "");
+    }
 
     public void onClick(@NotNull View v) {
         int i = v.getId();

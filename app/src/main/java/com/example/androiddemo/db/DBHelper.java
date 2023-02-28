@@ -329,6 +329,24 @@ public class DBHelper extends SQLiteOpenHelper {
 //        db.close();
     }
 
+    public void updateVoteItemContent(VoteItemBean bean){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("content", bean.getContent());
+        String[] args = {String.valueOf(bean.getId())};
+        db.update("vote_item", cv, "id=?",args);
+//        db.close();
+    }
+
+    public void updateVoteItemUrl(VoteItemBean bean){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("url", bean.getUrl());
+        String[] args = {String.valueOf(bean.getId())};
+        db.update("vote_item", cv, "id=?",args);
+//        db.close();
+    }
+
     public void deleteVoteItem(VoteBean voteBean){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         //删除选中的投票主题

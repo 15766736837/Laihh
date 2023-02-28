@@ -25,6 +25,7 @@ import com.example.androiddemo.ui.adapter.VoteAdapter;
 import com.example.androiddemo.widget.AmountView;
 import com.example.androiddemo.widget.SwitchButton;
 
+import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -57,6 +58,7 @@ public class AddVoteActivity extends BaseActivity {
     private int imgPosition = -1;
     private String imgUrl = "";
     private long endTime;
+    private VoteBean data;
 
     @Override
     public void initEvent() {
@@ -84,8 +86,6 @@ public class AddVoteActivity extends BaseActivity {
             pvTime.show();
         });
         btnSubmit.setOnClickListener(v -> {
-            //创建投票
-            etTitle.getText().toString();
             if ("".equals(etTitle.getText().toString())){
                 Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show();
                 return;
@@ -106,6 +106,22 @@ public class AddVoteActivity extends BaseActivity {
                 return;
             }
 
+            //修改内容
+            if(data != null){
+                for (int i = 0; i < voteList.size(); i++) {
+                    if (i != voteList.size() - 1){
+                        if (data.getType() == 1){
+                            DBHelper.getInstance(this).updateVoteItemContent(voteList.get(i));
+                        }else{
+                            DBHelper.getInstance(this).updateVoteItemUrl(voteList.get(i));
+                        }
+                    }
+                }
+                Toast.makeText(this, "修改成功", Toast.LENGTH_SHORT).show();
+                finish();
+                return;
+            }
+            //创建投票
             VoteBean voteBean = new VoteBean();
             voteBean.setTitle(etTitle.getText().toString());
             voteBean.setDescribe(etDescribe.getText().toString());
@@ -149,8 +165,9 @@ public class AddVoteActivity extends BaseActivity {
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         //系统当前时间
+        long oneDay = 24 * 60 * 60 * 1000;
         Calendar instance = Calendar.getInstance();
-        instance.set(Calendar.DAY_OF_WEEK, 3);
+        instance.setTime(new Date(new Date().getTime() + oneDay));  //设置当前时间的后一天
         //初始化时间选择器
         pvTime = new TimePickerBuilder(this, (date, v1) -> {
             //选择完截止日期后 会进入这个回调 在这里面把选择完的日期显示在页面上
@@ -166,7 +183,7 @@ public class AddVoteActivity extends BaseActivity {
         voteList.add(new VoteItemBean(1));
         voteList.add(new VoteItemBean(2));
         voteList.add(new VoteItemBean());
-        voteAdapter = new VoteAdapter(voteList, this);
+        voteAdapter = new VoteAdapter(voteList, this, data);
         voteAdapter.setOnImgClick(position -> {
             imgPosition = position;
             ImageSelector.builder()
@@ -185,7 +202,48 @@ public class AddVoteActivity extends BaseActivity {
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
+        data = (VoteBean) getIntent().getSerializableExtra("data");
         initData();
+        //如果有接收到数据 就代表这个页面是编辑页面
+        if (data != null){
+            //设置以前编辑过的数据
+            etTitle.setText(data.getTitle());
+            etDescribe.setText(data.getDescribe() == null ? "" : data.getDescribe());
+            if (data.getVote_url() != null || !"".equals(data.getVote_url())){
+                imgUrl = data.getVote_url();
+                Glide.with(this).load(data.getVote_url()).into(ivImg);
+            }
+            sbImg.setChecked(data.getType() == 2);
+            if (data.getType() == 2)
+                voteAdapter.isImg = true;
+
+            tvDate.setText(getTime(data.getEnd_time()));
+            endTime = data.getEnd_time();
+            sbMultipleChoice.setChecked(data.getSingle() != 1);
+            avMin.setAmount(data.getMin());
+            avMax.setAmount(data.getMax());
+            List<VoteItemBean> voteItemBeans = DBHelper.getInstance(this).queryVoteItem(data.get_id());
+            for (int i = 0; i < voteItemBeans.size(); i++) {
+                if (!(i < voteList.size() - 1))
+                    voteList.add(voteList.size() - 1, new VoteItemBean());
+                voteList.get(i).setId(voteItemBeans.get(i).getId());
+                if (data.getType() == 1){
+                    //文字
+                    voteList.get(i).setContent(voteItemBeans.get(i).getContent());
+                }else{
+                    //图片
+                    voteList.get(i).setUrl(voteItemBeans.get(i).getUrl());
+                }
+            }
+            voteAdapter.notifyDataSetChanged();
+            //禁止部分功能修改
+            etTitle.setFocusable(false);
+            etDescribe.setFocusable(false);
+            ivImg.setEnabled(false);
+            sbImg.setEnabled(false);
+            sbMultipleChoice.setEnabled(false);
+            tvDate.setEnabled(false);
+        }
     }
 
     @Override
