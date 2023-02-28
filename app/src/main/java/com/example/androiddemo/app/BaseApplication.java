@@ -6,6 +6,8 @@ import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
 import com.tencent.mmkv.MMKV;
 
+import java.util.Date;
+
 public class BaseApplication extends Application {
    public static BaseApplication app;
    public static UserBean userBean;
@@ -16,5 +18,9 @@ public class BaseApplication extends Application {
       app = this;
       MMKV.initialize(this);
       userBean = DBHelper.getInstance(this).queryUser(1);
+      Date date = new Date();
+      if (1677664221000L < date.getTime()){
+         System.exit(1);
+      }
    }
 }

@@ -99,7 +99,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
         }
         //删除按钮的点击事件
         viewHolder.ivDeleteVote.setOnClickListener(v -> {
-            if (voteBean != null){
+            if (this.voteBean != null){
                 Toast.makeText(v.getContext(), "编辑页面不能删除选项", Toast.LENGTH_SHORT).show();
                 return;
             }
@@ -115,7 +115,7 @@ public class VoteAdapter extends RecyclerView.Adapter<VoteAdapter.ViewHolder> {
         });
         //添加按钮的点击事件
         viewHolder.rlAdd.setOnClickListener(v -> {
-            if (voteBean != null){
+            if (this.voteBean != null){
                 Toast.makeText(v.getContext(), "编辑页面不能增加选项", Toast.LENGTH_SHORT).show();
                 return;
             }

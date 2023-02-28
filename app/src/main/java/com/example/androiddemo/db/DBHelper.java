@@ -123,6 +123,22 @@ public class DBHelper extends SQLiteOpenHelper {
         db.close();
     }
 
+    public void updateUserPwd(String pwd){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("update user set password=? where _id=?",new Object[]{pwd, BaseApplication.userBean.get_id()});
+        db.close();
+    }
+
+    public void updateUser(String studentClass, String studentNumber, String studentName){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues cv = new ContentValues();
+        cv.put("user_class", studentClass);
+        cv.put("student_number", studentNumber);
+        cv.put("student_name", studentName);
+        db.update("user", cv, "_id=?", new String[]{String.valueOf(BaseApplication.userBean.get_id())});
+        db.close();
+    }
+
     public UserBean queryUser(String user_name){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         Cursor cursor = db.rawQuery("select * from user where user_name=?", new String[]{user_name});

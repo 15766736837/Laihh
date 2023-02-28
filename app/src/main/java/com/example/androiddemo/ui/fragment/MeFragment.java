@@ -20,6 +20,8 @@ import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
+import com.example.androiddemo.ui.activity.EditInfoActivity;
+import com.example.androiddemo.ui.activity.ModifyPwdActivity;
 import com.example.androiddemo.ui.activity.SettingActivity;
 import com.example.androiddemo.ui.activity.VoteTakeNotesActivity;
 
@@ -38,6 +40,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         contentView.findViewById(R.id.ivSetting).setOnClickListener(this);
         ivAvatar.setOnClickListener(this);
         contentView.findViewById(R.id.rlTakeNotes).setOnClickListener(this);
+        contentView.findViewById(R.id.rlInfo).setOnClickListener(this);
+        contentView.findViewById(R.id.rlPwd).setOnClickListener(this);
     }
 
     @Override
@@ -54,13 +58,19 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     @Override
-    protected void initContent(Bundle savedInstanceState) {
+    public void onResume() {
+        super.onResume();
         mUserBean = DBHelper.getInstance(requireContext()).queryUser(1);
         mTvName.setText(mUserBean.getStudent_name());
         mTvId.setText("ID: " + mUserBean.get_id());
         if (mUserBean.getAvatarUrl() != null && !"".equals(mUserBean.getAvatarUrl()))
             Glide.with(this).load(mUserBean.getAvatarUrl()).into(ivAvatar);
         tvTakeNotes.setText(BaseApplication.userBean.getIs_user() == 1 ? "我参与的投票" : "我创建的投票");
+    }
+
+    @Override
+    protected void initContent(Bundle savedInstanceState) {
+
     }
 
     @Override
@@ -79,6 +89,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rlTakeNotes:
                 startActivity(new Intent(getContext(), VoteTakeNotesActivity.class));
+                break;
+            case R.id.rlInfo:
+                startActivity(new Intent(getContext(), EditInfoActivity.class));
+                break;
+            case R.id.rlPwd:
+                startActivity(new Intent(getContext(), ModifyPwdActivity.class));
                 break;
         }
     }
