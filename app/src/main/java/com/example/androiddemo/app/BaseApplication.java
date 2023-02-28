@@ -18,9 +18,5 @@ public class BaseApplication extends Application {
       app = this;
       MMKV.initialize(this);
       userBean = DBHelper.getInstance(this).queryUser(1);
-      Date date = new Date();
-      if (1677664221000L < date.getTime()){
-         System.exit(1);
-      }
    }
 }
