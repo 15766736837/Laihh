@@ -152,6 +152,7 @@ public class AddVoteActivity extends BaseActivity {
             voteBean.setMin(Integer.decode(avMin.getAmount()));
             voteBean.setMax(Integer.decode(avMax.getAmount()));
             voteBean.setUsers(users.toString());
+            voteBean.setStart_time(Calendar.getInstance().getTimeInMillis());
             //把数据保存到数据库
             long id = DBHelper.getInstance(this).insertVote(voteBean);
             for (int i = 0; i < voteList.size(); i++) {

@@ -14,6 +14,10 @@ public class VoteBean implements Serializable {
     private int min = 1;
     private int max = 1;
     private String users = "";
+    private long start_time;                //创建的时间
+    private String msg_contain_me = "";     //有可参与的投票通知
+    private String msg_dying_period = "";   //临期通知
+    private String msg_expire = "";         //到期通知
 
     public long get_id() {
         return _id;
@@ -101,5 +105,58 @@ public class VoteBean implements Serializable {
 
     public void setUsers(String users) {
         this.users = users;
+    }
+
+    public long getStart_time() {
+        return start_time;
+    }
+
+    public void setStart_time(long start_time) {
+        this.start_time = start_time;
+    }
+
+    public String getMsg_contain_me() {
+        return msg_contain_me;
+    }
+
+    public void setMsg_contain_me(String msg_contain_me) {
+        this.msg_contain_me = msg_contain_me;
+    }
+
+    public String getMsg_dying_period() {
+        return msg_dying_period;
+    }
+
+    public void setMsg_dying_period(String msg_dying_period) {
+        this.msg_dying_period = msg_dying_period;
+    }
+
+    public String getMsg_expire() {
+        return msg_expire;
+    }
+
+    public void setMsg_expire(String msg_expire) {
+        this.msg_expire = msg_expire;
+    }
+
+    @Override
+    public String toString() {
+        return "VoteBean{" +
+                "_id=" + _id +
+                ", create_id=" + create_id +
+                ", title='" + title + '\'' +
+                ", describe='" + describe + '\'' +
+                ", vote_url='" + vote_url + '\'' +
+                ", type=" + type +
+                ", end_time=" + end_time +
+                ", single=" + single +
+                ", min=" + min +
+                ", max=" + max +
+                ", users='" + users + '\'' +
+                ", start_time=" + start_time +
+                ", msg_contain_me='" + msg_contain_me + '\'' +
+                ", msg_dying_period='" + msg_dying_period + '\'' +
+                ", msg_expire='" + msg_expire + '\'' +
+                '}';
     }
 }

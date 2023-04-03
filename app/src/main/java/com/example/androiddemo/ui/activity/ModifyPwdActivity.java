@@ -2,6 +2,7 @@ package com.example.androiddemo.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -23,6 +24,7 @@ public class ModifyPwdActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
+        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
         findViewById(R.id.btnConfirm).setOnClickListener(v -> {
             //修改密码
             if ("".equals(etConfirmPwd.getText().toString()) || "".equals(etNewPwd.getText().toString())){

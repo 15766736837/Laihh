@@ -72,7 +72,11 @@ public class DBHelper extends SQLiteOpenHelper {
                 "single INTEGER DEFAULT 0," +
                 "min INTEGER DEFAULT 1," +
                 "max INTEGER DEFAULT 1," +
-                "users varchar" +
+                "users varchar," +
+                "start_time INTEGER DEFAULT 0," +
+                "msg_contain_me varchar DEFAULT \"\" ," +
+                "msg_dying_period varchar DEFAULT \"\" ," +
+                "msg_expire varchar DEFAULT \"\" " +
                 ") ");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
@@ -257,6 +261,10 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("min", bean.getMin());
         contentValues.put("max", bean.getMax());
         contentValues.put("users", bean.getUsers());
+        contentValues.put("start_time", bean.getStart_time());
+        contentValues.put("msg_contain_me", bean.getMsg_contain_me());
+        contentValues.put("msg_dying_period", bean.getMsg_dying_period());
+        contentValues.put("msg_expire", bean.getMsg_expire());
         // 插入数据
         // insert方法参数1：要插入的表名
         // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
@@ -265,6 +273,28 @@ public class DBHelper extends SQLiteOpenHelper {
         // 释放连接
         db.close();
         return i;
+    }
+
+    public void updateVote(VoteBean bean){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("create_id", BaseApplication.userBean.get_id());
+        contentValues.put("title", bean.getTitle());
+        contentValues.put("describe", bean.getDescribe());
+        contentValues.put("vote_url", bean.getVote_url());
+        contentValues.put("type", bean.getType());
+        contentValues.put("end_time", bean.getEnd_time());
+        contentValues.put("single", bean.getSingle());
+        contentValues.put("min", bean.getMin());
+        contentValues.put("max", bean.getMax());
+        contentValues.put("users", bean.getUsers());
+        contentValues.put("start_time", bean.getStart_time());
+        contentValues.put("msg_contain_me", bean.getMsg_contain_me());
+        contentValues.put("msg_dying_period", bean.getMsg_dying_period());
+        contentValues.put("msg_expire", bean.getMsg_expire());
+        String[] args = {String.valueOf(bean.get_id())};
+        db.update("vote", contentValues, "_id=?",args);
+//        db.close();
     }
 
     public long insertVoteItem(VoteItemBean bean) {
@@ -305,6 +335,10 @@ public class DBHelper extends SQLiteOpenHelper {
             voteBean.setMin(cursor.getInt(8));
             voteBean.setMax(cursor.getInt(9));
             voteBean.setUsers(cursor.getString(10));
+            voteBean.setStart_time(cursor.getLong(11));
+            voteBean.setMsg_contain_me(cursor.getString(12));
+            voteBean.setMsg_dying_period(cursor.getString(13));
+            voteBean.setMsg_expire(cursor.getString(14));
             voteBeanList.add(voteBean);
             // 将游标移到下一行
             cursor.moveToNext();
@@ -333,6 +367,10 @@ public class DBHelper extends SQLiteOpenHelper {
             voteBean.setMin(cursor.getInt(8));
             voteBean.setMax(cursor.getInt(9));
             voteBean.setUsers(cursor.getString(10));
+            voteBean.setStart_time(cursor.getLong(11));
+            voteBean.setMsg_contain_me(cursor.getString(12));
+            voteBean.setMsg_dying_period(cursor.getString(13));
+            voteBean.setMsg_expire(cursor.getString(14));
             voteBeanList.add(voteBean);
             // 将游标移到下一行
             cursor.moveToNext();
@@ -359,7 +397,7 @@ public class DBHelper extends SQLiteOpenHelper {
             // 将游标移到下一行
             cursor.moveToNext();
         }
-        db.close();
+//        db.close();
         return voteBeanList;
     }
 
@@ -371,7 +409,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("user_ids", bean.getUser_ids() + BaseApplication.userBean.get_id() + ",");
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-        db.close();
+//        db.close();
     }
 
     public void updateVoteItemContent(VoteItemBean bean){
@@ -380,7 +418,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("content", bean.getContent());
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-        db.close();
+//        db.close();
     }
 
     public void updateVoteItemUrl(VoteItemBean bean){
@@ -389,7 +427,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("url", bean.getUrl());
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-        db.close();
+//        db.close();
     }
 
     public void deleteVoteItem(VoteBean voteBean) {
@@ -398,7 +436,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete("vote", "_id=?", new String[]{Long.toString(voteBean.get_id())});
         //删除选中的投票主题里面的所有选项
         db.delete("vote_item", "_id=?", new String[]{Long.toString(voteBean.get_id())});
-        db.close();
+//        db.close();
     }
 }
 

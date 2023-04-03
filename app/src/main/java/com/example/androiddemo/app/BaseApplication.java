@@ -1,15 +1,12 @@
 package com.example.androiddemo.app;
 
 import android.app.Application;
-import android.content.res.Configuration;
-
-import androidx.appcompat.app.AppCompatDelegate;
 
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
 import com.tencent.mmkv.MMKV;
 
-import java.util.Date;
+import androidx.appcompat.app.AppCompatDelegate;
 
 public class BaseApplication extends Application {
    public static BaseApplication app;
