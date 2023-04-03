@@ -71,7 +71,8 @@ public class DBHelper extends SQLiteOpenHelper {
                 "end_time INTEGER DEFAULT 0," +
                 "single INTEGER DEFAULT 0," +
                 "min INTEGER DEFAULT 1," +
-                "max INTEGER DEFAULT 1" +
+                "max INTEGER DEFAULT 1," +
+                "users varchar" +
                 ") ");
 
         sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
@@ -255,6 +256,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("single", bean.getSingle());
         contentValues.put("min", bean.getMin());
         contentValues.put("max", bean.getMax());
+        contentValues.put("users", bean.getUsers());
         // 插入数据
         // insert方法参数1：要插入的表名
         // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
@@ -302,6 +304,7 @@ public class DBHelper extends SQLiteOpenHelper {
             voteBean.setSingle(cursor.getInt(7));
             voteBean.setMin(cursor.getInt(8));
             voteBean.setMax(cursor.getInt(9));
+            voteBean.setUsers(cursor.getString(10));
             voteBeanList.add(voteBean);
             // 将游标移到下一行
             cursor.moveToNext();
@@ -329,6 +332,7 @@ public class DBHelper extends SQLiteOpenHelper {
             voteBean.setSingle(cursor.getInt(7));
             voteBean.setMin(cursor.getInt(8));
             voteBean.setMax(cursor.getInt(9));
+            voteBean.setUsers(cursor.getString(10));
             voteBeanList.add(voteBean);
             // 将游标移到下一行
             cursor.moveToNext();

@@ -1,6 +1,7 @@
 package com.example.androiddemo.ui.activity;
 
 import android.os.Bundle;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
 
@@ -21,6 +22,7 @@ public class EditInfoActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
+        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
         findViewById(R.id.btnConfirm).setOnClickListener(v -> {
             if("".equals(etClass.getText().toString())){
                 Toast.makeText(this, "请输入您的班级", Toast.LENGTH_SHORT).show();

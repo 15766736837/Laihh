@@ -4,6 +4,7 @@ import static com.example.androiddemo.app.MainActivity.REQUEST_CODE_CHOOSE;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -22,6 +23,7 @@ import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseActivity;
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.bean.VoteBean;
 import com.example.androiddemo.bean.VoteItemBean;
@@ -36,6 +38,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Iterator;
 import java.util.List;
 
 /**
@@ -45,7 +48,7 @@ public class AddVoteActivity extends BaseActivity {
     //投票选项的数据
     private List<VoteItemBean> voteList = new ArrayList<>();
     private RecyclerView recyclerView;
-    private TextView tvDate;
+    private TextView tvDate, tvAll;
     private Button btnSubmit;
     private VoteAdapter voteAdapter;
     private ImageView ivBack, ivImg;
@@ -60,6 +63,8 @@ public class AddVoteActivity extends BaseActivity {
     private long endTime;
     private VoteBean data;
     private RecyclerView rvUser;
+    private AllowUserAdapter allowUserAdapter;
+    private List<UserBean> userBeans;
 
     @Override
     public void initEvent() {
@@ -86,6 +91,8 @@ public class AddVoteActivity extends BaseActivity {
             //打开日期选择器
             pvTime.show();
         });
+        //全选
+        tvAll.setOnClickListener(v -> allowUserAdapter.allSelect());
         btnSubmit.setOnClickListener(v -> {
             if ("".equals(etTitle.getText().toString())){
                 Toast.makeText(this, "请输入标题", Toast.LENGTH_SHORT).show();
@@ -106,7 +113,18 @@ public class AddVoteActivity extends BaseActivity {
                 Toast.makeText(this, "请选择截止日期", Toast.LENGTH_SHORT).show();
                 return;
             }
-
+            boolean isSelect = false;
+            StringBuilder users = new StringBuilder();
+            for (int i = 0; i < userBeans.size(); i++) {
+                if(userBeans.get(i).isSelect()){
+                    users.append(userBeans.get(i).get_id()).append(",");
+                    isSelect = true;
+                }
+            }
+            if (!isSelect){
+                Toast.makeText(this, "请至少选择一个可投票用户", Toast.LENGTH_SHORT).show();
+                return;
+            }
             //修改内容
             if(data != null){
                 for (int i = 0; i < voteList.size(); i++) {
@@ -133,6 +151,7 @@ public class AddVoteActivity extends BaseActivity {
             voteBean.setSingle(sbMultipleChoice.isChecked() ? 0 : 1);
             voteBean.setMin(Integer.decode(avMin.getAmount()));
             voteBean.setMax(Integer.decode(avMax.getAmount()));
+            voteBean.setUsers(users.toString());
             //把数据保存到数据库
             long id = DBHelper.getInstance(this).insertVote(voteBean);
             for (int i = 0; i < voteList.size(); i++) {
@@ -165,6 +184,7 @@ public class AddVoteActivity extends BaseActivity {
         btnSubmit = findViewById(R.id.btnSubmit);
         rvUser = findViewById(R.id.rvUser);
         recyclerView = findViewById(R.id.recyclerView);
+        tvAll = findViewById(R.id.tvAll);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         //系统当前时间
         long oneDay = 24 * 60 * 60 * 1000;
@@ -179,12 +199,25 @@ public class AddVoteActivity extends BaseActivity {
                 .setRangDate(instance, null)//起始终止年月日设定
                 .build();
 
-        List<UserBean> userBeans = DBHelper.getInstance(this).queryAllUser();
+        //选择用户的RecyclerView
+        userBeans = DBHelper.getInstance(this).queryAllUser();
+        //去除掉自己
+        Iterator<UserBean> iterator = userBeans.iterator();
+        while (iterator.hasNext()) {
+            UserBean platform = iterator.next();
+            if (BaseApplication.userBean.get_id() == platform.get_id())
+                iterator.remove();
+        }
         MyLayoutManager layout = new MyLayoutManager();
+        allowUserAdapter = new AllowUserAdapter(userBeans, this);
         layout.setAutoMeasureEnabled(true);//防止recyclerview高度为wrap时测量item高度0(一定要加这个属性，否则显示不出来）
         rvUser.setLayoutManager(layout);
-        AllowUserAdapter allowUserAdapter = new AllowUserAdapter(userBeans, this);
         rvUser.setAdapter(allowUserAdapter);
+        allowUserAdapter.setOnItemClick(userBean -> {
+            //Item点击事件
+            userBean.setSelect(!userBean.isSelect());
+            allowUserAdapter.notifyDataSetChanged();
+        });
     }
 
     private void initData(){
@@ -244,7 +277,18 @@ public class AddVoteActivity extends BaseActivity {
                     voteList.get(i).setUrl(voteItemBeans.get(i).getUrl());
                 }
             }
+            String[] split = data.getUsers().split(",");
+            for (int i = 0; i < split.length; i++) {
+                Log.e("split", split[i] + "");
+                if ((userBeans.get(i).get_id() + "").equals(split[i])){
+                    userBeans.get(i).setSelect(true);
+                }
+            }
+            for (int i = 0; i < userBeans.size(); i++) {
+                Log.e("userBeans", userBeans.get(i).get_id() + " ~~~~ " + userBeans.get(i).isSelect());
+            }
             voteAdapter.notifyDataSetChanged();
+            allowUserAdapter.notifyDataSetChanged();
             //禁止部分功能修改
             etTitle.setFocusable(false);
             etDescribe.setFocusable(false);

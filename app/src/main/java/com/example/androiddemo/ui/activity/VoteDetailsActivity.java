@@ -2,15 +2,11 @@ package com.example.androiddemo.ui.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
-
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.androiddemo.R;
@@ -21,11 +17,13 @@ import com.example.androiddemo.bean.VoteItemBean;
 import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.ui.adapter.VoteItemAdapter;
 
-import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 /**
  * 投票详情
@@ -167,6 +165,16 @@ public class VoteDetailsActivity extends BaseActivity implements View.OnClickLis
                         Toast.makeText(this, "最少选择" + voteBean.getMin() + "个选项", Toast.LENGTH_SHORT).show();
                         return;
                     }
+                }
+                boolean canIVote = false;
+                for (String s : voteBean.getUsers().replace("null", "").split(",")) {
+                    if(!"".equals(s) && (BaseApplication.userBean.get_id() + "").equals(s)){
+                        canIVote = true;
+                    }
+                }
+                if(!canIVote){
+                    Toast.makeText(this, "您没有投票资格", Toast.LENGTH_SHORT).show();
+                    return;
                 }
                 //提交投票
                 for (int i = 0; i < voteItemBeans.size(); i++) {

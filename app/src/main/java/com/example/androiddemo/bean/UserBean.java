@@ -10,7 +10,15 @@ public class UserBean {
     private String user_class;
     private String student_number;
     private String student_name;
+    private boolean isSelect;
 
+    public boolean isSelect() {
+        return isSelect;
+    }
+
+    public void setSelect(boolean select) {
+        isSelect = select;
+    }
 
     public long get_id() {
         return _id;

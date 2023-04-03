@@ -35,8 +35,11 @@ public class AllowUserAdapter extends RecyclerView.Adapter<AllowUserAdapter.View
 
     @Override
     public void onBindViewHolder(@NonNull AllowUserAdapter.ViewHolder holder, int position) {
+        UserBean userBean = userBeanList.get(position);
+        holder.tvContent.setText(userBean.getStudent_name());
+        holder.ivSelect.setImageResource(userBean.isSelect() ? R.mipmap.icon_cb_select : R.mipmap.icon_cb_not_selected);
         if (listener != null)
-            holder.rlRoot.setOnClickListener(v -> listener.itemClick(userBeanList.get(position)));
+            holder.rlRoot.setOnClickListener(v -> listener.itemClick(userBean));
     }
 
     public void setOnItemClick(AllowUserAdapter.OnItemClickListener listener){
@@ -46,6 +49,13 @@ public class AllowUserAdapter extends RecyclerView.Adapter<AllowUserAdapter.View
     @Override
     public int getItemCount() {
         return userBeanList.size();
+    }
+
+    public void allSelect(){
+        for (int i = 0; i < userBeanList.size(); i++) {
+            userBeanList.get(i).setSelect(true);
+        }
+        notifyDataSetChanged();
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {

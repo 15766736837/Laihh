@@ -13,6 +13,7 @@ public class VoteBean implements Serializable {
     private int single = 1;
     private int min = 1;
     private int max = 1;
+    private String users = "";
 
     public long get_id() {
         return _id;
@@ -92,5 +93,13 @@ public class VoteBean implements Serializable {
 
     public void setMax(int max) {
         this.max = max;
+    }
+
+    public String getUsers() {
+        return users;
+    }
+
+    public void setUsers(String users) {
+        this.users = users;
     }
 }

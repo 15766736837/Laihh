@@ -53,6 +53,7 @@
         app:hoveredFocusedTranslationZ="18dp"
         app:maxImageSize="50dp"
         app:pressedTranslationZ="18dp"
-        app:rippleColor="@color/white"
+        app:rippleColor="#FFFFFF"
+        app:tint="#FFFFFF"
         app:useCompatPadding="false" />
 </RelativeLayout>
