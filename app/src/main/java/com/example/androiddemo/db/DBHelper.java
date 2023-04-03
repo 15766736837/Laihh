@@ -211,6 +211,31 @@ public class DBHelper extends SQLiteOpenHelper {
         return userBean;
     }
 
+    public List<UserBean> queryAllUser(){
+        List<UserBean> userBeans = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from user", new String[]{});
+        // 游标只要不是在最后一行之后，就一直循环
+        cursor.moveToFirst();
+        UserBean userBean = null;
+        while (!cursor.isAfterLast()){
+            userBean = new UserBean();
+            userBean.set_id(cursor.getLong(0));
+            userBean.setUser_name(cursor.getString(1));
+            userBean.setPassword(cursor.getString(2));
+            userBean.setAvatarUrl(cursor.getString(3));
+            userBean.setIs_login(cursor.getInt(4));
+            userBean.setIs_user(cursor.getInt(5));
+            userBean.setUser_class(cursor.getString(6));
+            userBean.setStudent_number(cursor.getString(7));
+            userBean.setStudent_name(cursor.getString(8));
+            userBeans.add(userBean);
+            // 将游标移到下一行
+            cursor.moveToNext();
+        }
+        db.close();
+        return userBeans;
+    }
 
     /**************************************************/
     /*****************投票信息的数据库操作*****************/

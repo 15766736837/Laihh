@@ -163,5 +163,5 @@
         android:background="@drawable/selector_login_btn"
         android:enabled="true"
         android:text="修改"
-        android:textColor="@color/white" />
+        android:textColor="#FFFFFF" />
 </androidx.appcompat.widget.LinearLayoutCompat>

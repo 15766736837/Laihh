@@ -22,10 +22,13 @@ import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseActivity;
+import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.bean.VoteBean;
 import com.example.androiddemo.bean.VoteItemBean;
 import com.example.androiddemo.db.DBHelper;
+import com.example.androiddemo.ui.adapter.AllowUserAdapter;
 import com.example.androiddemo.ui.adapter.VoteAdapter;
+import com.example.androiddemo.utils.MyLayoutManager;
 import com.example.androiddemo.widget.AmountView;
 import com.example.androiddemo.widget.SwitchButton;
 
@@ -56,6 +59,7 @@ public class AddVoteActivity extends BaseActivity {
     private String imgUrl = "";
     private long endTime;
     private VoteBean data;
+    private RecyclerView rvUser;
 
     @Override
     public void initEvent() {
@@ -159,6 +163,7 @@ public class AddVoteActivity extends BaseActivity {
         rlMin = findViewById(R.id.rlMin);
         rlMax = findViewById(R.id.rlMax);
         btnSubmit = findViewById(R.id.btnSubmit);
+        rvUser = findViewById(R.id.rvUser);
         recyclerView = findViewById(R.id.recyclerView);
         recyclerView.setLayoutManager(new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false));
         //系统当前时间
@@ -173,6 +178,13 @@ public class AddVoteActivity extends BaseActivity {
         }).setType(new boolean[]{true, true, true, true, true, false})
                 .setRangDate(instance, null)//起始终止年月日设定
                 .build();
+
+        List<UserBean> userBeans = DBHelper.getInstance(this).queryAllUser();
+        MyLayoutManager layout = new MyLayoutManager();
+        layout.setAutoMeasureEnabled(true);//防止recyclerview高度为wrap时测量item高度0(一定要加这个属性，否则显示不出来）
+        rvUser.setLayoutManager(layout);
+        AllowUserAdapter allowUserAdapter = new AllowUserAdapter(userBeans, this);
+        rvUser.setAdapter(allowUserAdapter);
     }
 
     private void initData(){

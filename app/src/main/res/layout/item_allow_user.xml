@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.appcompat.widget.LinearLayoutCompat xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rlRoot"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/ivSelect"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:src="@mipmap/icon_cb_not_selected"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="16dp"/>
+
+    <TextView
+        android:id="@+id/tvContent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/ivSelect"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="6dp"
+        android:textColor="@color/textPrimary"
+        android:textSize="14sp"
+        android:layout_gravity="center_vertical"
+        android:text="选选项"/>
+</androidx.appcompat.widget.LinearLayoutCompat>
