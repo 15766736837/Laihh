@@ -56,7 +56,7 @@
                 android:background="@drawable/shape_account_type_selected"
                 android:gravity="center"
                 android:text="用户"
-                android:textColor="@color/white"
+                android:textColor="#FFFFFF"
                 android:textSize="16sp" />
 
             <TextView
@@ -65,7 +65,7 @@
                 android:layout_height="26dp"
                 android:gravity="center"
                 android:text="管理员"
-                android:textColor="@color/textPrimary"
+                android:textColor="#262936"
                 android:textSize="16sp" />
         </LinearLayout>
 
@@ -263,6 +263,6 @@
             android:layout_marginBottom="10dp"
             android:layout_alignParentBottom="true"
             android:text="注册"
-            android:textColor="@color/white" />
+            android:textColor="#FFFFFF" />
     </RelativeLayout>
 </RelativeLayout>

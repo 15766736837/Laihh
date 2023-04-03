@@ -1,6 +1,7 @@
 package com.example.androiddemo.ui.login;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -126,7 +127,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         this.isUser = isUser;
         tvUser.setBackground(isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
         tvAdmin.setBackground(!isUser ? getDrawable(R.drawable.shape_account_type_selected) : null);
-        tvUser.setTextColor(getResources().getColor(isUser ? R.color.white : R.color.textPrimary));
-        tvAdmin.setTextColor(getResources().getColor(!isUser ? R.color.white : R.color.textPrimary));
+        tvUser.setTextColor(Color.parseColor(isUser ? "#FFFFFF" : "#262936"));
+        tvAdmin.setTextColor(Color.parseColor(!isUser ? "#FFFFFF" : "#262936"));
     }
 }

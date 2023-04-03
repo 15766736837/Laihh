@@ -312,7 +312,7 @@
                 android:enabled="true"
                 android:text="确定"
                 android:layout_marginBottom="30dp"
-                android:textColor="@color/white" />
+                android:textColor="#FFFFFF" />
         </androidx.appcompat.widget.LinearLayoutCompat>
     </androidx.core.widget.NestedScrollView>
 </androidx.appcompat.widget.LinearLayoutCompat>

@@ -144,7 +144,7 @@
         android:enabled="true"
         android:text="确定"
         android:layout_marginBottom="30dp"
-        android:textColor="@color/white" />
+        android:textColor="#FFFFFF" />
 
     <Button
         android:id="@+id/btnDelete"
@@ -157,5 +157,5 @@
         android:text="删除"
         android:visibility="gone"
         android:layout_marginBottom="30dp"
-        android:textColor="@color/white" />
+        android:textColor="#FFFFFF" />
 </androidx.appcompat.widget.LinearLayoutCompat>

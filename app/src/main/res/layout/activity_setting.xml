@@ -2,6 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:orientation="vertical"
     android:background="@color/color_F5F6FA">
 
@@ -102,6 +104,32 @@
                 android:text="1.0.0"
                 android:layout_marginRight="4dp"
                 android:textColor="@color/color_303133"/>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="60dp"
+            android:layout_marginTop="0.5dp"
+            android:background="@color/white">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="16dp"
+                android:text="夜间模式"
+                android:textColor="@color/color_303133"
+                android:textSize="14sp" />
+
+            <com.example.androiddemo.widget.SwitchButton
+                android:id="@+id/sbImg"
+                android:layout_width="50dp"
+                android:layout_height="30dp"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                app:sb_checked_color="@color/colorPrimary"
+                app:sb_show_indicator="false"
+                tools:visibility="visible" />
         </RelativeLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -76,7 +76,7 @@
             android:textSize="14sp"
             android:text="添加选项（最多10项）"
             android:gravity="center_vertical"
-            android:textColor="@color/colorPrimary"
+            android:textColor="@color/textPrimary"
             android:layout_marginRight="16dp"/>
     </RelativeLayout>
 </FrameLayout>
