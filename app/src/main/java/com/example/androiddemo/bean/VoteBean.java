@@ -18,6 +18,7 @@ public class VoteBean implements Serializable {
     private String msg_contain_me = "";     //有可参与的投票通知
     private String msg_dying_period = "";   //临期通知
     private String msg_expire = "";         //到期通知
+    private long msg_time;
 
     public long get_id() {
         return _id;
@@ -139,24 +140,11 @@ public class VoteBean implements Serializable {
         this.msg_expire = msg_expire;
     }
 
-    @Override
-    public String toString() {
-        return "VoteBean{" +
-                "_id=" + _id +
-                ", create_id=" + create_id +
-                ", title='" + title + '\'' +
-                ", describe='" + describe + '\'' +
-                ", vote_url='" + vote_url + '\'' +
-                ", type=" + type +
-                ", end_time=" + end_time +
-                ", single=" + single +
-                ", min=" + min +
-                ", max=" + max +
-                ", users='" + users + '\'' +
-                ", start_time=" + start_time +
-                ", msg_contain_me='" + msg_contain_me + '\'' +
-                ", msg_dying_period='" + msg_dying_period + '\'' +
-                ", msg_expire='" + msg_expire + '\'' +
-                '}';
+    public long getMsg_time() {
+        return msg_time;
+    }
+
+    public void setMsg_time(long msg_time) {
+        this.msg_time = msg_time;
     }
 }
