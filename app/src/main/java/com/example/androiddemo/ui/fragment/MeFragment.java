@@ -67,10 +67,36 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 voteBeans = DBHelper.getInstance(getContext()).queryMeCreateVote();
                 for (int i = 0; i < voteBeans.size(); i++) {
                     VoteBean data = voteBeans.get(i);
-                    if (data.getMsg_dying_period().isEmpty() && isEffectiveDate(data.getEnd_time()))
+                    if (data.getMsg_dying_period().isEmpty() && isEffectiveDate(data.getEnd_time())){
                         updateData(data, "您参与的投票还有30分钟就结束", 2);
-                    if (data.getEnd_time() < Calendar.getInstance().getTimeInMillis())
+                    }else if(!data.getMsg_dying_period().isEmpty()){
+                        VoteBean newData = new VoteBean();
+                        newData.set_id(data.get_id());
+                        newData.setMsg_time(data.getEnd_time() - 1000 * 60 * 30);
+                        newData.setMsg_type(2);
+                        newData.setStart_time(data.getStart_time());
+                        newData.setEnd_time(data.getEnd_time());
+                        newData.setTitle(data.getTitle());
+                        newData.setMsg_contain_me(data.getMsg_contain_me());
+                        newData.setMsg_dying_period(data.getMsg_dying_period());
+                        newData.setMsg_expire(data.getMsg_expire());
+                        newMsgBean.add(newData);
+                    }
+                    if (data.getEnd_time() < Calendar.getInstance().getTimeInMillis()){
                         updateData(data, "您参与的投票已结束", 3);
+                    }else if(!data.getMsg_expire().isEmpty()){
+                        VoteBean newData = new VoteBean();
+                        newData.set_id(data.get_id());
+                        newData.setMsg_time(data.getEnd_time());
+                        newData.setMsg_type(3);
+                        newData.setStart_time(data.getStart_time());
+                        newData.setEnd_time(data.getEnd_time());
+                        newData.setTitle(data.getTitle());
+                        newData.setMsg_contain_me(data.getMsg_contain_me());
+                        newData.setMsg_dying_period(data.getMsg_dying_period());
+                        newData.setMsg_expire(data.getMsg_expire());
+                        newMsgBean.add(newData);
+                    }
                 }
             } else {
                 //如果是用户的话就查询出自己可参与的投票，还有已经参与的投票
@@ -91,14 +117,50 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         if (data.getMsg_contain_me().isEmpty()) {
                             updateData(data, "您有新的可参与投票主题", 1);
                         } else {
-                            data.setMsg_time(data.getStart_time());
-                            newMsgBean.add(data);
+                            VoteBean newData = new VoteBean();
+                            newData.set_id(data.get_id());
+                            newData.setMsg_time(data.getStart_time());
+                            newData.setMsg_type(1);
+                            newData.setStart_time(data.getStart_time());
+                            newData.setEnd_time(data.getEnd_time());
+                            newData.setTitle(data.getTitle());
+                            newData.setMsg_contain_me(data.getMsg_contain_me());
+                            newData.setMsg_dying_period(data.getMsg_dying_period());
+                            newData.setMsg_expire(data.getMsg_expire());
+                            newMsgBean.add(newData);
                         }
                         boolean effectiveDate = isEffectiveDate(data.getEnd_time());
-                        if (data.getMsg_dying_period().isEmpty() && effectiveDate)
+                        if (data.getMsg_dying_period().isEmpty() && effectiveDate){
                             updateData(data, "您参与的投票还有30分钟就结束", 2);
-                        if (data.getMsg_expire().isEmpty() && data.getEnd_time() < Calendar.getInstance().getTimeInMillis())
+                        }else if(!data.getMsg_dying_period().isEmpty()){
+                            VoteBean newData = new VoteBean();
+                            newData.set_id(data.get_id());
+                            newData.setMsg_time(data.getEnd_time() - 1000 * 60 * 30);
+                            newData.setMsg_type(2);
+                            newData.setStart_time(data.getStart_time());
+                            newData.setEnd_time(data.getEnd_time());
+                            newData.setTitle(data.getTitle());
+                            newData.setMsg_contain_me(data.getMsg_contain_me());
+                            newData.setMsg_dying_period(data.getMsg_dying_period());
+                            newData.setMsg_expire(data.getMsg_expire());
+                            newMsgBean.add(newData);
+                        }
+                        if (data.getMsg_expire().isEmpty() && data.getEnd_time() < Calendar.getInstance().getTimeInMillis()){
                             updateData(data, "您参与的投票已结束", 3);
+                        }else if(!data.getMsg_expire().isEmpty()){
+                            VoteBean newData = new VoteBean();
+                            newData.set_id(data.get_id());
+                            newData.set_id(data.get_id());
+                            newData.setMsg_time(data.getEnd_time());
+                            newData.setMsg_type(3);
+                            newData.setStart_time(data.getStart_time());
+                            newData.setEnd_time(data.getEnd_time());
+                            newData.setTitle(data.getTitle());
+                            newData.setMsg_contain_me(data.getMsg_contain_me());
+                            newData.setMsg_dying_period(data.getMsg_dying_period());
+                            newData.setMsg_expire(data.getMsg_expire());
+                            newMsgBean.add(newData);
+                        }
                     }
                 }
             }
@@ -115,23 +177,32 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
      */
     private void updateData(VoteBean data, String content, int type) {
         mmkv.putBoolean("isNewMsg", true);
+        VoteBean newData = new VoteBean();
         //提醒消息的时间
         switch (type) {
             case 1:
-                data.setMsg_contain_me(content);
-                data.setMsg_time(data.getStart_time());
+                newData.setMsg_contain_me(content);
+                newData.setMsg_time(data.getStart_time());
                 break;
             case 2:
-                data.setMsg_dying_period(content);
-                data.setMsg_time(data.getEnd_time() - 1000 * 60 * 30);
+                newData.setMsg_dying_period(content);
+                newData.setMsg_time(data.getEnd_time() - 1000 * 60 * 30);
                 break;
             case 3:
-                data.setMsg_expire(content);
-                data.setMsg_time(data.getEnd_time());
+                newData.setMsg_expire(content);
+                newData.setMsg_time(data.getEnd_time());
                 break;
         }
         //更新数据库
         DBHelper.getInstance(requireContext()).updateVote(data);
+        newData.set_id(data.get_id());
+        newData.setMsg_type(type);
+        newData.setStart_time(data.getStart_time());
+        newData.setEnd_time(data.getEnd_time());
+        newData.setTitle(data.getTitle());
+        newData.setMsg_contain_me(data.getMsg_contain_me());
+        newData.setMsg_dying_period(data.getMsg_dying_period());
+        newData.setMsg_expire(data.getMsg_expire());
         newMsgBean.add(data);
         redView.setVisibility(mmkv.getBoolean("isNewMsg", false) ? View.VISIBLE : View.GONE);
     }
@@ -171,6 +242,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         if (mUserBean.getAvatarUrl() != null && !"".equals(mUserBean.getAvatarUrl()))
             Glide.with(this).load(mUserBean.getAvatarUrl()).into(ivAvatar);
         tvTakeNotes.setText(BaseApplication.userBean.getIs_user() == 1 ? "我参与的投票" : "我创建的投票");
+        redView.setVisibility(mmkv.getBoolean("isNewMsg", false) ? View.VISIBLE : View.GONE);
     }
 
     @Override

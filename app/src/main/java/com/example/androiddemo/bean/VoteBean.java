@@ -19,6 +19,7 @@ public class VoteBean implements Serializable {
     private String msg_dying_period = "";   //临期通知
     private String msg_expire = "";         //到期通知
     private long msg_time;
+    private long msg_type;
 
     public long get_id() {
         return _id;
@@ -146,5 +147,13 @@ public class VoteBean implements Serializable {
 
     public void setMsg_time(long msg_time) {
         this.msg_time = msg_time;
+    }
+
+    public long getMsg_type() {
+        return msg_type;
+    }
+
+    public void setMsg_type(long msg_type) {
+        this.msg_type = msg_type;
     }
 }

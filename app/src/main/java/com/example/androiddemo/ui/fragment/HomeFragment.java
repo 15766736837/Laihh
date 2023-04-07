@@ -25,6 +25,7 @@ import com.example.androiddemo.ui.activity.VoteDetailsActivity;
 import com.example.androiddemo.ui.adapter.HomeVoteAdapter;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.util.Iterator;
 import java.util.List;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
@@ -66,6 +67,20 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         }else{
             //如果是用户就把所有投票数据都展示出来
             voteBeans = DBHelper.getInstance(getContext()).queryAllVote();
+            Iterator<VoteBean> iterator = voteBeans.iterator();
+            while (iterator.hasNext()) {
+                boolean isContain = false;
+                VoteBean data = iterator.next();
+                String[] split = data.getUsers().split(",");
+                for (int i = 0; i < split.length; i++) {
+                    if ((BaseApplication.userBean.get_id() + "").equals(split[i]))
+                        isContain = true;
+                }
+                if (!isContain) {
+                    //不允许的投票
+                    iterator.remove();
+                }
+            }
         }
         //加载列表数据
         homeVoteAdapter = new HomeVoteAdapter(voteBeans, getContext());

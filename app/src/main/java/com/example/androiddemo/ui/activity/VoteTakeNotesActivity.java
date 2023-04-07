@@ -67,9 +67,9 @@ public class VoteTakeNotesActivity extends BaseActivity implements View.OnClickL
                         data = voteBean;
                     }
                 }
+                if (data != null)
+                    voteBeans.add(data);
             }
-            if (data != null)
-                voteBeans.add(data);
         }else{
             //管理员
             voteBeans = instance.queryMeCreateVote();

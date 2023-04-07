@@ -1,5 +1,6 @@
 package com.example.androiddemo.ui.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseActivity;
 import com.example.androiddemo.bean.VoteBean;
+import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.ui.adapter.NewMsgAdapter;
 import com.tencent.mmkv.MMKV;
 
@@ -49,7 +51,10 @@ public class MsgActivity extends BaseActivity {
             newMsgAdapter = new NewMsgAdapter(newMsgBean, this);
             recyclerView.setAdapter(newMsgAdapter);
             newMsgAdapter.setOnItemClick(voteBean -> {
-                // TODO: 2023/4/4 跳转详情
+                Intent intent = new Intent(this, VoteDetailsActivity.class);
+                VoteBean voteBean1 = DBHelper.getInstance(this).queryAllVote(voteBean.get_id());
+                intent.putExtra("data", voteBean1);
+                startActivity(intent);
             });
         }
     }

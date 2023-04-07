@@ -42,11 +42,11 @@ public class NewMsgAdapter extends RecyclerView.Adapter<NewMsgAdapter.ViewHolder
         VoteBean voteBean = voteBeanList.get(position);
         holder.tvTitle.setText(voteBean.getTitle());
         holder.tvTime.setText(getTime(voteBean.getMsg_time()));
-        if (!voteBean.getMsg_contain_me().isEmpty()){
+        if (voteBean.getMsg_type() == 1){
             holder.tvContent.setText(voteBean.getMsg_contain_me());
-        }else if(!voteBean.getMsg_dying_period().isEmpty()){
+        }else if(voteBean.getMsg_type() == 2){
             holder.tvContent.setText(voteBean.getMsg_dying_period());
-        }else if(!voteBean.getMsg_expire().isEmpty()){
+        }else if(voteBean.getMsg_type() == 3){
             holder.tvContent.setText(voteBean.getMsg_expire());
         }
 
