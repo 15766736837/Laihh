@@ -2,7 +2,7 @@ package com.example.androiddemo.bean;
 
 import java.io.Serializable;
 
-public class VoteBean implements Serializable {
+public class VoteBean implements Serializable, Comparable<VoteBean> {
     private long _id;
     private long create_id;
     private String title;
@@ -155,5 +155,11 @@ public class VoteBean implements Serializable {
 
     public void setMsg_type(long msg_type) {
         this.msg_type = msg_type;
+    }
+
+    @Override
+    public int compareTo(VoteBean o) {
+        long i = o.getMsg_time() - this.getMsg_time();//先按照年龄排序
+        return (int)i;
     }
 }

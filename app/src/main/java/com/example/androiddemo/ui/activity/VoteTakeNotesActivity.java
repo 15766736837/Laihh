@@ -65,10 +65,10 @@ public class VoteTakeNotesActivity extends BaseActivity implements View.OnClickL
                 for (VoteItemBean voteItemBean : instance.queryVoteItem(voteBean.get_id())) {
                     if (voteItemBean.getUser_ids().contains(Long.toString(BaseApplication.userBean.get_id()))){
                         data = voteBean;
+                        if (data != null && !voteBeans.contains(data))
+                            voteBeans.add(data);
                     }
                 }
-                if (data != null)
-                    voteBeans.add(data);
             }
         }else{
             //管理员

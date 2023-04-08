@@ -35,6 +35,7 @@ import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -68,7 +69,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 for (int i = 0; i < voteBeans.size(); i++) {
                     VoteBean data = voteBeans.get(i);
                     if (data.getMsg_dying_period().isEmpty() && isEffectiveDate(data.getEnd_time())){
-                        updateData(data, "您参与的投票还有30分钟就结束", 2);
+                        updateData(data, "您创建的投票还有30分钟就结束", 2);
                     }else if(!data.getMsg_dying_period().isEmpty()){
                         VoteBean newData = new VoteBean();
                         newData.set_id(data.get_id());
@@ -83,7 +84,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         newMsgBean.add(newData);
                     }
                     if (data.getEnd_time() < Calendar.getInstance().getTimeInMillis()){
-                        updateData(data, "您参与的投票已结束", 3);
+                        updateData(data, "您创建的投票已结束", 3);
                     }else if(!data.getMsg_expire().isEmpty()){
                         VoteBean newData = new VoteBean();
                         newData.set_id(data.get_id());
@@ -181,15 +182,18 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         //提醒消息的时间
         switch (type) {
             case 1:
+                data.setMsg_contain_me(content);
                 newData.setMsg_contain_me(content);
                 newData.setMsg_time(data.getStart_time());
                 break;
             case 2:
                 newData.setMsg_dying_period(content);
+                data.setMsg_dying_period(content);
                 newData.setMsg_time(data.getEnd_time() - 1000 * 60 * 30);
                 break;
             case 3:
                 newData.setMsg_expire(content);
+                data.setMsg_expire(content);
                 newData.setMsg_time(data.getEnd_time());
                 break;
         }
@@ -203,7 +207,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         newData.setMsg_contain_me(data.getMsg_contain_me());
         newData.setMsg_dying_period(data.getMsg_dying_period());
         newData.setMsg_expire(data.getMsg_expire());
-        newMsgBean.add(data);
+        newMsgBean.add(newData);
         redView.setVisibility(mmkv.getBoolean("isNewMsg", false) ? View.VISIBLE : View.GONE);
     }
 
@@ -278,6 +282,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
             case R.id.rlMsg:
                 //投票提醒
                 Intent intent = new Intent(getContext(), MsgActivity.class);
+                Collections.sort(newMsgBean);
                 intent.putExtra("data", newMsgBean);
                 startActivity(intent);
                 break;
@@ -303,8 +308,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     }
 
     public static boolean isEffectiveDate(Long time) {
-        Long setTime = Long.valueOf(1000 * 60 * 30);//1秒*60*30
-        Date date = new Date();
-        return date.getTime() - time <= setTime && date.getTime() > time;
+        long diff = time - Calendar.getInstance().getTimeInMillis();
+        long days = diff / (1000 * 60 * 60 * 24);
+        long hours = (diff-days*(1000 * 60 * 60 * 24))/(1000* 60 * 60);
+        long minutes = (diff-days*(1000 * 60 * 60 * 24)-hours*(1000* 60 * 60))/(1000* 60);
+        return days <= 0 && hours <= 0 && minutes <= 30;
     }
 }

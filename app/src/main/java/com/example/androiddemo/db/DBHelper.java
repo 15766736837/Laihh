@@ -294,7 +294,7 @@ public class DBHelper extends SQLiteOpenHelper {
         contentValues.put("msg_expire", bean.getMsg_expire());
         String[] args = {String.valueOf(bean.get_id())};
         db.update("vote", contentValues, "_id=?",args);
-//        db.close();
+        db.close();
     }
 
     public long insertVoteItem(VoteItemBean bean) {
@@ -426,7 +426,7 @@ public class DBHelper extends SQLiteOpenHelper {
             // 将游标移到下一行
             cursor.moveToNext();
         }
-//        db.close();
+        db.close();
         return voteBeanList;
     }
 
@@ -438,7 +438,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("user_ids", bean.getUser_ids() + BaseApplication.userBean.get_id() + ",");
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-//        db.close();
+        db.close();
     }
 
     public void updateVoteItemContent(VoteItemBean bean){
@@ -447,7 +447,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("content", bean.getContent());
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-//        db.close();
+        db.close();
     }
 
     public void updateVoteItemUrl(VoteItemBean bean){
@@ -456,7 +456,7 @@ public class DBHelper extends SQLiteOpenHelper {
         cv.put("url", bean.getUrl());
         String[] args = {String.valueOf(bean.getId())};
         db.update("vote_item", cv, "id=?",args);
-//        db.close();
+        db.close();
     }
 
     public void deleteVoteItem(VoteBean voteBean) {
@@ -465,7 +465,7 @@ public class DBHelper extends SQLiteOpenHelper {
         db.delete("vote", "_id=?", new String[]{Long.toString(voteBean.get_id())});
         //删除选中的投票主题里面的所有选项
         db.delete("vote_item", "_id=?", new String[]{Long.toString(voteBean.get_id())});
-//        db.close();
+        db.close();
     }
 }
 

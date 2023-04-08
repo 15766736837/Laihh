@@ -206,7 +206,7 @@ public class AddVoteActivity extends BaseActivity {
         Iterator<UserBean> iterator = userBeans.iterator();
         while (iterator.hasNext()) {
             UserBean platform = iterator.next();
-            if (BaseApplication.userBean.get_id() == platform.get_id())
+            if (BaseApplication.userBean.get_id() == platform.get_id() || platform.getIs_user() == 0)
                 iterator.remove();
         }
         MyLayoutManager layout = new MyLayoutManager();

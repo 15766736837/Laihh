@@ -105,6 +105,9 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 if (userBean == null) {
                     Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
                     return;
+                } else if((userBean.getIs_user() == 1) != isUser){
+                    Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
+                    return;
                 } else if (!mEtPwd.getText().toString().equals(userBean.getPassword())) {
                     Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
                     return;
