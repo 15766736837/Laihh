@@ -73,4 +73,43 @@
         android:textColor="@color/color_909399"
         android:layout_marginLeft="16dp"
         android:layout_marginTop="24dp"/>
+
+    <RelativeLayout
+        android:id="@+id/rlTakeNotes"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:paddingHorizontal="16dp"
+        android:layout_marginTop="5dp">
+
+        <ImageView
+            android:id="@+id/ivIcon"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/icon_take_notes"/>
+
+        <TextView
+            android:id="@+id/tvTakeNotes"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/ivIcon"
+            android:layout_marginLeft="10dp"
+            android:textSize="14sp"
+            android:textColor="@color/color_303133"
+            android:text="预约记录"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_alignParentRight="true"
+            android:src="@mipmap/icon_chat_enter"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_F5F6FA"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
 </androidx.appcompat.widget.LinearLayoutCompat>
