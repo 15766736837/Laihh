@@ -18,6 +18,7 @@ import java.util.List;
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TB_NAME = "user";
     private static final String TB_ROOM = "room";
+    private static final String TB_ROOM_ORDER = "room_order";
     private volatile static DBHelper dbHelper;
     public static final String DB_NAME = "AppDatabase.db";
     public static final int DB_VERSION = 1;
@@ -62,6 +63,16 @@ public class DBHelper extends SQLiteOpenHelper {
                 "seat varchar," +
                 "describe varchar," +
                 "status INTEGER DEFAULT 0" +
+                ") ");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                TB_ROOM_ORDER + " ( id integer primary key autoincrement," +
+                "room_id INTEGER DEFAULT 0," +
+                "user_id INTEGER DEFAULT 0," +
+                "start_time INTEGER DEFAULT 0," +
+                "end_time INTEGER DEFAULT 0," +
+                "region varchar," +
+                "seat varchar" +
                 ") ");
     }
 
@@ -160,7 +171,7 @@ public class DBHelper extends SQLiteOpenHelper {
             // 将游标移到下一行
             cursor.moveToNext();
         }
-//        db.close();
+        db.close();
         return roomBeans;
     }
 
