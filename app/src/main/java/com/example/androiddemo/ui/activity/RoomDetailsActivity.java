@@ -88,6 +88,8 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
                 tvRegion.setText(roomOrders.get(0).getRegion());
                 tvSeat.setText(roomOrders.get(0).getSeat());
                 btnSubmit.setVisibility(View.GONE);
+                tvStartTime.setEnabled(false);
+                tvEndTime.setEnabled(false);
             }
         }
 

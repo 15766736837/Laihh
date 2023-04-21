@@ -34,13 +34,15 @@ public class BaseApplication extends Application {
 
          roomBean1.setRoom_name("自习室2");
          roomBean1.setDescribe("自习室2的描述!!!!");
+         roomBean1.setRegion("A区,B区,C区,D区,E区,F区,G区,H区");
+         roomBean1.setSeat("1,2,3,4,5");
          db.insertRoom(roomBean1);
 
          roomBean1.setRoom_name("自习室3");
          roomBean1.setDescribe("自习室3的描述!!!!");
+         roomBean1.setRegion("E区,F区,G区,H区");
+         roomBean1.setSeat("1,2,3");
          db.insertRoom(roomBean1);
-      } else {
-         // 这里统一处理自习室的状态
       }
    }
 }
