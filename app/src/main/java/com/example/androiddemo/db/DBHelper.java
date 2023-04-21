@@ -101,6 +101,12 @@ public class DBHelper extends SQLiteOpenHelper {
         return i;
     }
 
+    public void updateUserPwd(String pwd){
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        db.execSQL("update user set password=? where _id=?",new Object[]{pwd, BaseApplication.app.userBean.get_id()});
+        db.close();
+    }
+
     public void updateUser(long _id, int is_login){
         SQLiteDatabase db = dbHelper.getWritableDatabase();
         db.execSQL("update user set is_login=? where _id=?",new Object[]{is_login,_id});

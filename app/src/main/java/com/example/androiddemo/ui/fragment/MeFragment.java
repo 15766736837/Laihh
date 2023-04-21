@@ -19,6 +19,7 @@ import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
+import com.example.androiddemo.ui.activity.ModifyPwdActivity;
 import com.example.androiddemo.ui.activity.MyOrderActivity;
 import com.example.androiddemo.ui.activity.RoomDetailsActivity;
 import com.example.androiddemo.ui.activity.SettingActivity;
@@ -38,6 +39,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         contentView.findViewById(R.id.ivSetting).setOnClickListener(this);
         ivAvatar.findViewById(R.id.ivAvatar).setOnClickListener(this);
         contentView.findViewById(R.id.rlMyOrder).setOnClickListener(this);
+        contentView.findViewById(R.id.rlPwd).setOnClickListener(this);
     }
 
     @Override
@@ -77,6 +79,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rlMyOrder:
                 startActivity(new Intent(getContext(), MyOrderActivity.class));
+                break;
+            case R.id.rlPwd:
+                startActivity(new Intent(getContext(), ModifyPwdActivity.class));
                 break;
         }
     }
