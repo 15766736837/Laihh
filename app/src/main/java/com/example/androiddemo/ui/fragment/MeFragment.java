@@ -19,6 +19,8 @@ import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
+import com.example.androiddemo.ui.activity.MyOrderActivity;
+import com.example.androiddemo.ui.activity.RoomDetailsActivity;
 import com.example.androiddemo.ui.activity.SettingActivity;
 
 import org.w3c.dom.Text;
@@ -35,6 +37,7 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
     public void initEvent() {
         contentView.findViewById(R.id.ivSetting).setOnClickListener(this);
         ivAvatar.findViewById(R.id.ivAvatar).setOnClickListener(this);
+        contentView.findViewById(R.id.rlMyOrder).setOnClickListener(this);
     }
 
     @Override
@@ -71,6 +74,9 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                         .setSingle(true)  //设置是否单选
                         .canPreview(true) //是否可以预览图片，默认为true
                         .start(requireActivity(), ((MainActivity)requireActivity()).REQUEST_CODE_CHOOSE); // 打开相册
+                break;
+            case R.id.rlMyOrder:
+                startActivity(new Intent(getContext(), MyOrderActivity.class));
                 break;
         }
     }

@@ -3,6 +3,7 @@ package com.example.androiddemo.app;
 import android.app.Application;
 
 import com.example.androiddemo.bean.RoomBean;
+import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.db.DBHelper;
 import com.tencent.mmkv.MMKV;
 
@@ -10,6 +11,7 @@ import java.util.List;
 
 public class BaseApplication extends Application {
    public static BaseApplication app;
+   public UserBean userBean;
 
 
    @Override
@@ -20,6 +22,7 @@ public class BaseApplication extends Application {
 
       //初始化一些科室的信息
       DBHelper db = DBHelper.getInstance(this);
+      userBean = db.queryUser(1);
       List<RoomBean> roomBeans = DBHelper.getInstance(this).queryAllRoom();
       if (roomBeans.isEmpty()) {
          RoomBean roomBean1 = new RoomBean();

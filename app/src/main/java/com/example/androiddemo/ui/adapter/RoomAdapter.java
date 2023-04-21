@@ -11,11 +11,15 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.androiddemo.R;
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.bean.RoomBean;
+import com.example.androiddemo.bean.RoomOrder;
+import com.example.androiddemo.db.DBHelper;
 
 import java.util.List;
 
 public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
+    private final DBHelper dbHelper;
     private List<RoomBean> roomBeanList;
     private Context context;
     private RoomAdapter.OnItemClickListener listener;
@@ -23,6 +27,7 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
     public RoomAdapter(List<RoomBean> roomBeanList, Context context) {
         this.roomBeanList = roomBeanList;
         this.context = context;
+        dbHelper = DBHelper.getInstance(context);
     }
 
     @NonNull
@@ -38,8 +43,9 @@ public class RoomAdapter extends RecyclerView.Adapter<RoomAdapter.ViewHolder>{
         holder.rlRoot.setOnClickListener(v -> listener.itemClick(roomBean));
         holder.roomName.setText(roomBean.getRoom_name());
         holder.tvDescribe.setText(roomBean.getDescribe());
-        holder.tvStatus.setText(roomBean.getStatus() != 0 ? "已约满" : "可预约");
-        holder.tvStatus.setBackground(context.getResources().getDrawable(roomBean.getStatus() != 0 ? R.drawable.shape_grey : R.drawable.shape_green));
+        List<RoomOrder> roomOrders = dbHelper.queryRoomOrder(roomBean.getId(), BaseApplication.app.userBean.get_id());
+        holder.tvStatus.setText(roomOrders.isEmpty() ? "可预约" : "已预约");
+        holder.tvStatus.setBackground(context.getResources().getDrawable(roomOrders.isEmpty() ? R.drawable.shape_green : R.drawable.shape_grey));
     }
 
     @Override

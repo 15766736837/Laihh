@@ -11,6 +11,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
+import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.ui.adapter.MainFragmentPagerAdapter;
 import com.example.androiddemo.R;
 import com.example.androiddemo.ui.fragment.HomeFragment;
@@ -75,7 +76,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
-
+        BaseApplication.app.userBean = DBHelper.getInstance(this).queryUser(1);
     }
 
     @Override

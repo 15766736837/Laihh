@@ -1,19 +1,28 @@
 package com.example.androiddemo.ui.activity;
 
+import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bigkoo.pickerview.builder.TimePickerBuilder;
 import com.bigkoo.pickerview.view.TimePickerView;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseActivity;
+import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.bean.RoomBean;
+import com.example.androiddemo.bean.RoomOrder;
+import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.widget.BottomDialog;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * 预约详情
@@ -23,8 +32,10 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
     private TextView roomName, tvDescribe, tvStartTime, tvEndTime, tvRegion, tvSeat;
     private TimePickerView pvStartTime, pvEndTime;
     private BottomDialog regionDialog, seatDialog;
+    private Button btnSubmit;
     private long startTime, endTime;
     private RoomBean roomBean;
+    private String region, seat;
 
     @Override
     public void initEvent() {
@@ -33,6 +44,8 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
         tvRegion = findViewById(R.id.tvRegion);
         tvSeat = findViewById(R.id.tvSeat);
         findViewById(R.id.ivBack).setOnClickListener(this);
+        btnSubmit = findViewById(R.id.btnSubmit);
+        btnSubmit.setOnClickListener(this);
         tvStartTime.setOnClickListener(this);
         tvEndTime.setOnClickListener(this);
         tvRegion.setOnClickListener(this);
@@ -56,10 +69,26 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
         if(roomBean != null){
             roomName.setText(roomBean.getRoom_name());
             tvDescribe.setText(roomBean.getDescribe());
-            regionDialog = new BottomDialog("自习室区域", roomBean.getRegion());
-            seatDialog = new BottomDialog("自习室位置", roomBean.getSeat());
-            regionDialog.setOnSelectListener(content -> tvRegion.setText(content));
-            seatDialog.setOnSelectListener(content -> tvSeat.setText(content));
+            List<RoomOrder> roomOrders = DBHelper.getInstance(this).queryRoomOrder(roomBean.getId(), BaseApplication.app.userBean.get_id());
+            if (roomOrders.isEmpty()){
+                regionDialog = new BottomDialog("自习室区域", roomBean.getRegion());
+                seatDialog = new BottomDialog("自习室位置", roomBean.getSeat());
+                regionDialog.setOnSelectListener(content -> {
+                    tvRegion.setText(content);
+                    region = content;
+                });
+                seatDialog.setOnSelectListener(content -> {
+                    tvSeat.setText(content);
+                    seat = content;
+                });
+            }else {
+                //已经预约过
+                tvStartTime.setText(getTime(roomOrders.get(0).getStart_time()));
+                tvEndTime.setText(getTime(roomOrders.get(0).getEnd_time()));
+                tvRegion.setText(roomOrders.get(0).getRegion());
+                tvSeat.setText(roomOrders.get(0).getSeat());
+                btnSubmit.setVisibility(View.GONE);
+            }
         }
 
         //初始化开始时间选择器
@@ -101,7 +130,63 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
                 if(seatDialog != null)
                     seatDialog.show(getSupportFragmentManager(), null);
                 break;
+            case R.id.btnSubmit:
+                Date date = new Date();
+                if (startTime < date.getTime()){
+                    Toast.makeText(this, "开始时间不能小于当前时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(endTime < startTime){
+                    Toast.makeText(this, "结束时间不能小于开始时间", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(region == null){
+                    Toast.makeText(this, "请选择自习室区域", Toast.LENGTH_SHORT).show();
+                    return;
+                }else if(seat == null){
+                    Toast.makeText(this, "请选择自习室位置", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+                DBHelper db = DBHelper.getInstance(this);
+                List<RoomOrder> roomOrders = db.queryRoomOrder(roomBean.getId(), region, seat);
+                List<RoomOrder> myOrder = db.queryRoomOrder(roomBean.getId(), BaseApplication.app.userBean.get_id());
+                if (!myOrder.isEmpty()){
+                    Toast.makeText(this, "您已经预约过了", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+                if(!roomOrders.isEmpty()){
+                    //判断选中的时间段跟区域和位置是否有人预约了
+                    for (int i = 0; i < roomOrders.size(); i++) {
+                        RoomOrder roomOrder = roomOrders.get(i);
+                        Date aStartTime = new Date(startTime);
+                        Date aEndTime = new Date(endTime);
+                        Date bStartTime = new Date(roomOrder.getStart_time());
+                        Date bEndTime = new Date(roomOrder.getEnd_time());
+                        if (aEndTime.getTime() <= bStartTime.getTime() || bEndTime.getTime() <= aStartTime.getTime()) {
+                            // 两个时间段没有重叠,提交预约
+                            submitOrder(db);
+                        } else {
+                            // 两个时间段有重叠
+                            Toast.makeText(this, "该自习室的这个座位在这个时间段应该被人预约了", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                }else {
+                    //提交预约
+                    submitOrder(db);
+                }
+                break;
         }
+    }
+
+    private void submitOrder(DBHelper db) {
+        RoomOrder roomOrder = new RoomOrder();
+        roomOrder.setRoom_id(roomBean.getId());
+        roomOrder.setStart_time(startTime);
+        roomOrder.setEnd_time(endTime);
+        roomOrder.setRegion(region);
+        roomOrder.setSeat(seat);
+        db.insertRoomOrder(roomOrder);
+        Toast.makeText(this, "预约成功", Toast.LENGTH_SHORT).show();
+        finish();
     }
 
     private String getTime(long milSecond) {
