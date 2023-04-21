@@ -1,14 +1,8 @@
 package com.example.androiddemo.ui.fragment;
 
+import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -16,6 +10,7 @@ import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.bean.RoomBean;
 import com.example.androiddemo.db.DBHelper;
+import com.example.androiddemo.ui.activity.RoomDetailsActivity;
 import com.example.androiddemo.ui.adapter.RoomAdapter;
 
 import java.util.List;
@@ -48,6 +43,9 @@ public class HomeFragment extends BaseFragment {
         recyclerView.setAdapter(roomAdapter);
         roomAdapter.setOnItemClick(roomBean -> {
             //列表的点击事件
+            Intent intent = new Intent(getContext(), RoomDetailsActivity.class);
+            intent.putExtra("data", roomBean);
+            startActivity(intent);
         });
     }
 }

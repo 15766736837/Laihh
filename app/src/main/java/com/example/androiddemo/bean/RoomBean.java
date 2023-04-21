@@ -1,6 +1,8 @@
 package com.example.androiddemo.bean;
 
-public class RoomBean {
+import java.io.Serializable;
+
+public class RoomBean implements Serializable {
     private long id;
     private String room_name;   //自习室名字
     private String region;      //区域
