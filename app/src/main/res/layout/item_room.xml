@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="100dp">
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="100dp"
+        android:id="@+id/rlRoot">
+
+        <androidx.appcompat.widget.LinearLayoutCompat
+            android:id="@+id/layRoom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:layout_marginLeft="16dp"
+            android:layout_marginTop="15dp"
+            android:layout_toLeftOf="@id/tvStatus">
+
+            <TextView
+                android:id="@+id/roomName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自习室"
+                android:textSize="15sp"
+                android:textColor="@color/color_303133"/>
+
+            <TextView
+                android:id="@+id/tvDescribe"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="自习室的描述"
+                android:textSize="13sp"
+                android:layout_below="@id/roomName"
+                android:layout_marginTop="10dp"
+                android:textColor="@color/color_9EA7B2"/>
+        </androidx.appcompat.widget.LinearLayoutCompat>
+
+        <TextView
+            android:id="@+id/tvStatus"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="11sp"
+            android:textColor="@color/white"
+            android:text="可预约"
+            android:paddingHorizontal="5dp"
+            android:paddingVertical="1dp"
+            android:layout_marginTop="2dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignTop="@id/layRoom"
+            android:layout_marginRight="16dp"
+            android:background="@drawable/shape_green"/>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/color_divider"
+            android:layout_alignParentBottom="true"/>
+    </RelativeLayout>
+</FrameLayout>
+

@@ -13,6 +13,8 @@
     <color name="colorPrimary">#3352DB</color>
     <color name="color_303133">#303133</color>
     <color name="color_F5F6FA">#F5F6FA</color>
+    <color name="color_9EA7B2">#9EA7B2</color>
     <color name="color_909399">#909399</color>
+    <color name="color_divider">#DADFE7</color>
     <color name="color_F53434">#F53434</color>
 </resources>

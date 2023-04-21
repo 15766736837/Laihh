@@ -8,10 +8,16 @@ import android.database.sqlite.SQLiteOpenHelper;
 
 import androidx.annotation.Nullable;
 
+import com.example.androiddemo.app.BaseApplication;
+import com.example.androiddemo.bean.RoomBean;
 import com.example.androiddemo.bean.UserBean;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class DBHelper extends SQLiteOpenHelper {
     private static final String TB_NAME = "user";
+    private static final String TB_ROOM = "room";
     private volatile static DBHelper dbHelper;
     public static final String DB_NAME = "AppDatabase.db";
     public static final int DB_VERSION = 1;
@@ -47,6 +53,15 @@ public class DBHelper extends SQLiteOpenHelper {
                 "password varchar," +
                 "avatar_url varchar," +
                 "is_login INTEGER DEFAULT 0" +
+                ") ");
+
+        sqLiteDatabase.execSQL("CREATE TABLE IF NOT EXISTS " +
+                TB_ROOM + " ( id integer primary key autoincrement," +
+                "room_name varchar," +
+                "region varchar," +
+                "seat varchar," +
+                "describe varchar," +
+                "status INTEGER DEFAULT 0" +
                 ") ");
     }
 
@@ -123,6 +138,51 @@ public class DBHelper extends SQLiteOpenHelper {
         }
         db.close();
         return userBean;
+    }
+
+    //查询出所有的自习室
+    public List<RoomBean> queryAllRoom(){
+        List<RoomBean> roomBeans = new ArrayList<>();
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        Cursor cursor = db.rawQuery("select * from room", new String[]{});
+        // 游标只要不是在最后一行之后，就一直循环
+        cursor.moveToFirst();
+        RoomBean roomBean = null;
+        while (!cursor.isAfterLast()){
+            roomBean = new RoomBean();
+            roomBean.setId(cursor.getLong(0));
+            roomBean.setRoom_name(cursor.getString(1));
+            roomBean.setRegion(cursor.getString(2));
+            roomBean.setSeat(cursor.getString(3));
+            roomBean.setDescribe(cursor.getString(4));
+            roomBean.setStatus(cursor.getInt(5));
+            roomBeans.add(roomBean);
+            // 将游标移到下一行
+            cursor.moveToNext();
+        }
+//        db.close();
+        return roomBeans;
+    }
+
+    //新增自习室
+    public long insertRoom(RoomBean bean) {
+        // 通过DBHelper类获取一个读写的SQLiteDatabase对象
+        SQLiteDatabase db = dbHelper.getWritableDatabase();
+        // 创建ContentValue设置参数
+        ContentValues contentValues = new ContentValues();
+        contentValues.put("room_name", bean.getRoom_name());
+        contentValues.put("region", bean.getRegion());
+        contentValues.put("seat", bean.getSeat());
+        contentValues.put("describe", bean.getDescribe());
+        contentValues.put("status", bean.getStatus());
+        // 插入数据
+        // insert方法参数1：要插入的表名
+        // insert方法参数2：如果发现将要插入的行为空时，会将这个列名的值设为null
+        // insert方法参数3：contentValue
+        long i = db.insert(TB_ROOM, "id", contentValues);
+        // 释放连接
+        db.close();
+        return i;
     }
 }
 
