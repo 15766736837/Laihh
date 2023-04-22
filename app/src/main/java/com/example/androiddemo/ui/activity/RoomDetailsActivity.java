@@ -1,10 +1,14 @@
 package com.example.androiddemo.ui.activity;
 
+import android.content.Context;
+import android.graphics.Bitmap;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -17,6 +21,11 @@ import com.example.androiddemo.bean.RoomBean;
 import com.example.androiddemo.bean.RoomOrder;
 import com.example.androiddemo.db.DBHelper;
 import com.example.androiddemo.widget.BottomDialog;
+import com.google.zxing.BarcodeFormat;
+import com.google.zxing.MultiFormatWriter;
+import com.google.zxing.WriterException;
+import com.google.zxing.common.BitMatrix;
+import com.journeyapps.barcodescanner.BarcodeEncoder;
 
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
@@ -33,6 +42,7 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
     private TimePickerView pvStartTime, pvEndTime;
     private BottomDialog regionDialog, seatDialog;
     private Button btnSubmit;
+    private ImageView ivCode;
     private long startTime, endTime;
     private RoomBean roomBean;
     private String region, seat;
@@ -43,6 +53,7 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
         tvEndTime = findViewById(R.id.tvEndTime);
         tvRegion = findViewById(R.id.tvRegion);
         tvSeat = findViewById(R.id.tvSeat);
+        ivCode = findViewById(R.id.ivCode);
         findViewById(R.id.ivBack).setOnClickListener(this);
         btnSubmit = findViewById(R.id.btnSubmit);
         btnSubmit.setOnClickListener(this);
@@ -90,6 +101,18 @@ public class RoomDetailsActivity extends BaseActivity implements View.OnClickLis
                 btnSubmit.setVisibility(View.GONE);
                 tvStartTime.setEnabled(false);
                 tvEndTime.setEnabled(false);
+                ivCode.setVisibility(View.VISIBLE);
+
+                String s = roomOrders.get(0).getRoom_id() + "/" + roomOrders.get(0).getRegion() + "/" + roomOrders.get(0).getSeat() + "/" + BaseApplication.app.userBean.get_id();
+                MultiFormatWriter writer = new MultiFormatWriter();
+                try {
+                    BitMatrix matrix = writer.encode(s, BarcodeFormat.QR_CODE,350,350);
+                    BarcodeEncoder encoder = new BarcodeEncoder();
+                    Bitmap bitmap = encoder.createBitmap(matrix);
+                    ivCode.setImageBitmap(bitmap);
+                } catch (WriterException e) {
+                    e.printStackTrace();
+                }
             }
         }
 

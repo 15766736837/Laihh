@@ -22,7 +22,7 @@ public class MyOrderActivity extends BaseActivity {
 
     @Override
     public void initEvent() {
-
+        findViewById(R.id.ivBack).setOnClickListener(v -> finish());
     }
 
     @Override
