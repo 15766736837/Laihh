@@ -14,7 +14,6 @@ import com.example.androiddemo.app.BaseActivity;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.R;
 import com.example.androiddemo.bean.UserBean;
-import com.example.androiddemo.db.DBHelper;
 
 /**
  * 登录
@@ -47,11 +46,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
-        UserBean userBean = DBHelper.getInstance(this).queryUser(1);
+/*        UserBean userBean = DBHelper.getInstance(this).queryUser(1);
         if(userBean != null){
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        }
+        }*/
     }
 
     private void setEditTextTextChangedListener(EditText et) {
@@ -80,7 +79,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(new Intent(this, RegActivity.class));
                 break;
             case R.id.btnLogin:
-                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
+/*                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
                 if (userBean == null) {
                     Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
                     return;
@@ -93,7 +92,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 DBHelper.getInstance(this).updateUser(userBean.get_id(), 1);
                 Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
                 startActivity(new Intent(this, MainActivity.class));
-                finish();
+                finish();*/
                 break;
         }
     }

@@ -12,7 +12,6 @@ import android.widget.Toast;
 import com.example.androiddemo.app.BaseActivity;
 import com.example.androiddemo.R;
 import com.example.androiddemo.bean.UserBean;
-import com.example.androiddemo.db.DBHelper;
 
 /**
  * 注册
@@ -82,20 +81,19 @@ public class RegActivity extends BaseActivity implements View.OnClickListener {
                     return;
                 }
 
-                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
-                if (userBean != null) {
-                    Toast.makeText(this, "账号已存在", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+/*              //网络请求
+                Map<String, String> params = new HashMap<>();
+                params.put("key1", "value1");
+                params.put("key2", "value2");
+                HttpUtils.request("http://example.com/api", "POST", params, new HttpUtils.Callback() {
+                    @Override
+                    public void onSuccess(String response) {
+                    }
 
-                //注册信息储存到数据库
-                long insert = DBHelper.getInstance(this).insert(mEtName.getText().toString(), mEtPwd.getText().toString());
-                if (insert != -1) {
-                    Toast.makeText(this, "注册成功", Toast.LENGTH_SHORT).show();
-                    finish();
-                } else {
-                    Toast.makeText(this, "注册失败", Toast.LENGTH_SHORT).show();
-                }
+                    @Override
+                    public void onError(Exception e) {
+                    }
+                });*/
                 break;
         }
     }
