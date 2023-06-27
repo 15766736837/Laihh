@@ -13,6 +13,7 @@ import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.bean.UserDataBean;
 import com.example.androiddemo.ui.activity.EditInfoActivity;
+import com.example.androiddemo.ui.activity.MyReservationActivity;
 import com.example.androiddemo.ui.activity.SettingActivity;
 import com.google.gson.Gson;
 import com.tencent.mmkv.MMKV;
@@ -28,6 +29,8 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         contentView.findViewById(R.id.ivSetting).setOnClickListener(this);
         contentView.findViewById(R.id.rlInfo).setOnClickListener(this);
         ivAvatar.findViewById(R.id.ivAvatar).setOnClickListener(this);
+        contentView.findViewById(R.id.rlReservation).setOnClickListener(this);
+        contentView.findViewById(R.id.rlMsg).setOnClickListener(this);
     }
 
     @Override
@@ -64,6 +67,12 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rlInfo:
                 startActivity(new Intent(getContext(), EditInfoActivity.class));
+                break;
+            case R.id.rlReservation:
+                startActivity(new Intent(getContext(), MyReservationActivity.class));
+                break;
+            case R.id.rlMsg:
+                // TODO: 2023/6/28 通知
                 break;
         }
     }
