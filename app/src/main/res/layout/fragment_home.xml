@@ -49,6 +49,7 @@
         android:src="@mipmap/add"
         app:backgroundTintMode="screen"
         app:borderWidth="0dp"
+        android:visibility="gone"
         app:hoveredFocusedTranslationZ="18dp"
         app:maxImageSize="50dp"
         app:pressedTranslationZ="18dp"
