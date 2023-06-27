@@ -15,4 +15,8 @@
     <color name="color_F5F6FA">#F5F6FA</color>
     <color name="color_909399">#909399</color>
     <color name="color_F53434">#F53434</color>
+    <color name="color_545766">#545766</color>
+    <color name="colorDivider">#E4E8EB</color>
+    <color name="textPrimary">#262936</color>
+
 </resources>

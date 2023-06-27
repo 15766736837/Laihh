@@ -77,22 +77,4 @@ public class MainActivity extends BaseActivity {
     protected void initContent(Bundle savedInstanceState) {
 
     }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == REQUEST_CODE_CHOOSE && resultCode == RESULT_OK) {
-            //获取选择器返回的数据
-            ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
-            /**
-             * 是否是来自于相机拍照的图片，
-             * 只有本次调用相机拍出来的照片，返回时才为true。
-             * 当为true时，图片返回的结果有且只有一张图片。
-             */
-            boolean isCameraImage = data.getBooleanExtra(ImageSelector.IS_CAMERA_IMAGE, false);
-            for (String url : images) {
-                ((MeFragment)mFragmentList.get(1)).setAvatar(url);
-            }
-        }
-    }
 }

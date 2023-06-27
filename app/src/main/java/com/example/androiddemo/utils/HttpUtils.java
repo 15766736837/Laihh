@@ -205,4 +205,95 @@ public class HttpUtils  {
             }
         }).start();
     }
+
+    /**
+     * 发送put请求
+     *
+     * @param url      请求地址
+     * @param requestBody     请求参数，以json的String类型传递
+     * @param listener 回调函数
+     */
+    public static void put(String url, String requestBody, final HttpCallback listener) {
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HttpURLConnection conn = null;
+                InputStream inputStream = null;
+                BufferedReader reader = null;
+
+                try {
+                    URL requestUrl = new URL(BaseApplication.BASE_URL + url);
+                    conn = (HttpURLConnection) requestUrl.openConnection();
+                    conn.setRequestMethod("PUT");
+                    conn.setRequestProperty("Content-Type", "application/json");
+
+                    if (requestBody != null && !requestBody.isEmpty()) {
+                        OutputStream outputStream = conn.getOutputStream();
+                        outputStream.write(requestBody.getBytes());
+                        outputStream.flush();
+                    }
+
+                    if (conn.getResponseCode() != 200) {
+                        throw new IOException("Unexpected HTTP response code: " + conn.getResponseCode());
+                    }
+
+                    inputStream = conn.getInputStream();
+                    reader = new BufferedReader(new InputStreamReader(inputStream));
+                    StringBuffer response = new StringBuffer();
+                    String line;
+
+                    while ((line = reader.readLine()) != null) {
+                        response.append(line);
+                    }
+
+                    if (listener != null) {
+                        // 将回调函数的执行切换到主线程
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                try {
+                                    JSONObject jsonObject = new JSONObject(response.toString());
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 200){
+                                        listener.onSuccess(jsonObject.getString("data"));
+                                    }else {
+                                        Toast.makeText(BaseApplication.app, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
+                            }
+                        });
+                    }
+                } catch (IOException e) {
+                    if (listener != null) {
+                        // 将回调函数的执行切换到主线程
+                        Handler handler = new Handler(Looper.getMainLooper());
+                        handler.post(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(BaseApplication.app, "服务器异常", Toast.LENGTH_SHORT).show();
+                                listener.onFailure(e);
+                            }
+                        });
+                    }
+                } finally {
+                    try {
+                        if (reader != null) {
+                            reader.close();
+                        }
+                        if (inputStream != null) {
+                            inputStream.close();
+                        }
+                        if (conn != null) {
+                            conn.disconnect();
+                        }
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }).start();
+    }
 }
