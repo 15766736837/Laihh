@@ -49,5 +49,6 @@ dependencies {
     //万能Adapter
     implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta14"
     //Java 对象与 JSON 数据之间进行转换
+
     implementation 'com.google.code.gson:gson:2.10.1'
 }

@@ -11,14 +11,16 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.app.MainActivity;
-import com.example.androiddemo.bean.UserBean;
+import com.example.androiddemo.bean.UserDataBean;
 import com.example.androiddemo.ui.activity.SettingActivity;
+import com.google.gson.Gson;
+import com.tencent.mmkv.MMKV;
 
 public class MeFragment extends BaseFragment implements View.OnClickListener {
     private TextView mTvName;
     private TextView mTvId;
     private ImageView ivAvatar;
-    private UserBean mUserBean;
+    private UserDataBean mUserBean;
 
     @Override
     public void initEvent() {
@@ -40,11 +42,10 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
-/*        mUserBean = DBHelper.getInstance(requireContext()).queryUser(1);
-        mTvName.setText(mUserBean.getUser_name());
-        mTvId.setText("ID: " + mUserBean.get_id());
-        if (mUserBean.getAvatarUrl() != null && !"".equals(mUserBean.getAvatarUrl()))
-            Glide.with(this).load(mUserBean.getAvatarUrl()).into(ivAvatar);*/
+        String user = MMKV.defaultMMKV().decodeString("user");
+        UserDataBean userDataBean = new Gson().fromJson(user, UserDataBean.class);
+        mTvName.setText(userDataBean.getUser().getUsername());
+        mTvId.setText("ID: " + userDataBean.getUser().getId());
     }
 
     @Override

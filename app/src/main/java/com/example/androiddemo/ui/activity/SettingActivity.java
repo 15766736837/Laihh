@@ -7,10 +7,10 @@ import android.view.View;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseActivity;
 import com.example.androiddemo.app.MainActivity;
-import com.example.androiddemo.bean.UserBean;
 import com.example.androiddemo.ui.login.LoginActivity;
 import com.example.androiddemo.utils.ActivityStackManager;
 import com.example.androiddemo.widget.TipsDialog;
+import com.tencent.mmkv.MMKV;
 
 public class SettingActivity extends BaseActivity implements View.OnClickListener {
 
@@ -28,12 +28,11 @@ public class SettingActivity extends BaseActivity implements View.OnClickListene
 
             @Override
             public void onConfirm() {
-/*                UserBean userBean = DBHelper.getInstance(SettingActivity.this).queryUser(1);
-                DBHelper.getInstance(SettingActivity.this).updateUser(userBean.get_id(), 0);
-                ActivityStackManager.getInstance().getActivity(MainActivity.class).finish();
+                MMKV.defaultMMKV().encode("user", "");
                 mTipsDialog.dismiss();
+                ActivityStackManager.getInstance().getActivity(MainActivity.class).finish();
                 startActivity(new Intent(SettingActivity.this, LoginActivity.class));
-                finish();*/
+                finish();
             }
         });
     }

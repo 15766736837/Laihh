@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -11,9 +12,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.androiddemo.app.BaseActivity;
-import com.example.androiddemo.app.MainActivity;
 import com.example.androiddemo.R;
-import com.example.androiddemo.bean.UserBean;
+import com.example.androiddemo.app.MainActivity;
+import com.example.androiddemo.utils.HttpUtils;
+import com.google.gson.Gson;
+import com.tencent.mmkv.MMKV;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * 登录
@@ -22,6 +28,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     private EditText mEtPwd, mEtName;
     private TextView mBtnReg;
     private Button mBtnLogin;
+    String key = "user";
 
     @Override
     public void initEvent() {
@@ -46,11 +53,11 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
 
     @Override
     protected void initContent(Bundle savedInstanceState) {
-/*        UserBean userBean = DBHelper.getInstance(this).queryUser(1);
-        if(userBean != null){
+        String value = MMKV.defaultMMKV().decodeString(key);
+        if(value != null && !value.isEmpty()){
             startActivity(new Intent(this, MainActivity.class));
             finish();
-        }*/
+        }
     }
 
     private void setEditTextTextChangedListener(EditText et) {
@@ -79,20 +86,23 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
                 startActivity(new Intent(this, RegActivity.class));
                 break;
             case R.id.btnLogin:
-/*                UserBean userBean = DBHelper.getInstance(this).queryUser(mEtName.getText().toString());
-                if (userBean == null) {
-                    Toast.makeText(this, "账号不存在", Toast.LENGTH_SHORT).show();
-                    return;
-                } else if (!mEtPwd.getText().toString().equals(userBean.getPassword())) {
-                    Toast.makeText(this, "密码错误", Toast.LENGTH_SHORT).show();
-                    return;
-                }
+                Map<String, String> params = new HashMap<>();
+                params.put("username", mEtName.getText().toString());
+                params.put("password", mEtPwd.getText().toString());
+                HttpUtils.post("login", new Gson().toJson(params), new HttpUtils.HttpCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        MMKV.defaultMMKV().encode(key, response);
+                        Toast.makeText(LoginActivity.this, "登录成功", Toast.LENGTH_SHORT).show();
+                        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+                        finish();
+                    }
 
-                userBean.setIs_login(1);
-                DBHelper.getInstance(this).updateUser(userBean.get_id(), 1);
-                Toast.makeText(this, "登录成功", Toast.LENGTH_SHORT).show();
-                startActivity(new Intent(this, MainActivity.class));
-                finish();*/
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
                 break;
         }
     }
