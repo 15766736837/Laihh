@@ -6,12 +6,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
-import com.chad.library.adapter.base.BaseQuickAdapter;
-import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.bean.HomeRoomDataBean;
@@ -19,6 +13,9 @@ import com.example.androiddemo.ui.activity.HomeDetailsRoomActivity;
 import com.example.androiddemo.ui.activity.HomeRoomAdapter;
 import com.example.androiddemo.utils.HttpUtils;
 import com.google.gson.Gson;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 public class HomeFragment extends BaseFragment implements View.OnClickListener {
 
@@ -44,6 +41,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             HomeRoomDataBean.HomeRoomBean item = (HomeRoomDataBean.HomeRoomBean) adapter.getItem(position);
             Intent intent = new Intent(requireContext(), HomeDetailsRoomActivity.class);
             intent.putExtra("data", item);
+            intent.putExtra("type", 1);
             startActivity(intent);
         });
     }

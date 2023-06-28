@@ -33,6 +33,15 @@ public class UserDataBean {
         private String sex;
         private String phone;
         private String job;
+        private boolean isSelect;
+
+        public boolean isSelect() {
+            return isSelect;
+        }
+
+        public void setSelect(boolean select) {
+            isSelect = select;
+        }
 
         public int getId() {
             return id;
