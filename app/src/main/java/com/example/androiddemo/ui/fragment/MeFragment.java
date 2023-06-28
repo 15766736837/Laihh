@@ -30,7 +30,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
         contentView.findViewById(R.id.rlInfo).setOnClickListener(this);
         ivAvatar.findViewById(R.id.ivAvatar).setOnClickListener(this);
         contentView.findViewById(R.id.rlReservation).setOnClickListener(this);
-        contentView.findViewById(R.id.rlMsg).setOnClickListener(this);
     }
 
     @Override
@@ -70,9 +69,6 @@ public class MeFragment extends BaseFragment implements View.OnClickListener {
                 break;
             case R.id.rlReservation:
                 startActivity(new Intent(getContext(), MyReservationActivity.class));
-                break;
-            case R.id.rlMsg:
-                // TODO: 2023/6/28 通知
                 break;
         }
     }

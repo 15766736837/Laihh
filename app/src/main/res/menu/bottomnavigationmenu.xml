@@ -5,6 +5,12 @@
     <item android:id="@+id/home"
         android:title="首页"
         android:icon="@drawable/selector_icon_home"/>
+    <item android:id="@+id/room"
+        android:title="会议"
+        android:icon="@drawable/selector_icon_room"/>
+    <item android:id="@+id/notice"
+        android:title="公告"
+        android:icon="@drawable/selector_icon_nocite"/>
     <item android:id="@+id/me"
         android:title="我的"
         android:icon="@drawable/selector_icon_me"/>

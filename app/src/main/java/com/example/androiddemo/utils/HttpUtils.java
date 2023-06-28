@@ -48,7 +48,7 @@ public class HttpUtils  {
                     conn.setConnectTimeout(DEFAULT_CONNECT_TIMEOUT);
                     conn.setReadTimeout(DEFAULT_READ_TIMEOUT);
                     conn.connect();
-
+                    Log.e("Http: ", BaseApplication.BASE_URL + url);
                     if (conn.getResponseCode() != HttpURLConnection.HTTP_OK) {
                         throw new IOException("HTTP error code: " + conn.getResponseCode());
                     }
@@ -67,7 +67,17 @@ public class HttpUtils  {
                         handler.post(new Runnable() {
                             @Override
                             public void run() {
-                                callback.onSuccess(result);
+                                try {
+                                    JSONObject jsonObject = new JSONObject(result);
+                                    int code = jsonObject.getInt("code");
+                                    if (code == 200){
+                                        callback.onSuccess(jsonObject.getString("data"));
+                                    }else {
+                                        Toast.makeText(BaseApplication.app, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (JSONException e) {
+                                    throw new RuntimeException(e);
+                                }
                             }
                         });
                     }
@@ -128,7 +138,7 @@ public class HttpUtils  {
                     conn.setDoInput(true);
                     conn.setRequestProperty("Content-Type", CONTENT_TYPE_JSON);
                     conn.connect();
-
+                    Log.e("Http: ", json);
                     os = conn.getOutputStream();
                     os.write(json.getBytes(CHARSET_UTF8));
                     os.flush();

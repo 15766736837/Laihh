@@ -47,8 +47,7 @@ dependencies {
     implementation 'com.github.bumptech.glide:glide:4.12.0'
     implementation 'com.github.bumptech.glide:okhttp3-integration:4.12.0'
     //万能Adapter
-    implementation "io.github.cymchad:BaseRecyclerViewAdapterHelper:4.0.0-beta14"
+    implementation 'com.github.CymChad:BaseRecyclerViewAdapterHelper:3.0.11'
     //Java 对象与 JSON 数据之间进行转换
-
     implementation 'com.google.code.gson:gson:2.10.1'
 }

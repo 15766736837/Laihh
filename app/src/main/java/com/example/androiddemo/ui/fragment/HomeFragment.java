@@ -1,31 +1,50 @@
 package com.example.androiddemo.ui.fragment;
 
+import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.example.androiddemo.R;
-import com.example.androiddemo.app.BaseApplication;
 import com.example.androiddemo.app.BaseFragment;
+import com.example.androiddemo.bean.HomeRoomDataBean;
+import com.example.androiddemo.ui.activity.HomeDetailsRoomActivity;
+import com.example.androiddemo.ui.activity.HomeRoomAdapter;
+import com.example.androiddemo.utils.HttpUtils;
+import com.google.gson.Gson;
 
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseFragment implements View.OnClickListener {
+
+    private RecyclerView recyclerView;
+    private HomeRoomAdapter homeRoomAdapter;
+    private TextView tvAll, tvMy;
+    private boolean isAll = true; //true = 所有 false = 我预约的
     @Override
     public void initEvent() {
-
+        tvAll.setOnClickListener(this);
+        tvMy.setOnClickListener(this);
     }
 
     @Override
     protected void initView() {
-        contentView.findViewById(R.id.addRoom).setOnClickListener(v -> {
-            // TODO: 2023/6/28 创建会议室
-            Toast.makeText(requireContext(), "创建会议室", Toast.LENGTH_SHORT).show();
+        tvAll = contentView.findViewById(R.id.tvAll);
+        tvMy = contentView.findViewById(R.id.tvMy);
+        recyclerView = contentView.findViewById(R.id.recyclerView);
+        recyclerView.setLayoutManager(new LinearLayoutManager(requireContext(), LinearLayoutManager.VERTICAL, false));
+        homeRoomAdapter = new HomeRoomAdapter(R.layout.item_notice);
+        recyclerView.setAdapter(homeRoomAdapter);
+        homeRoomAdapter.setOnItemClickListener((adapter, view, position) -> {
+            HomeRoomDataBean.HomeRoomBean item = (HomeRoomDataBean.HomeRoomBean) adapter.getItem(position);
+            Intent intent = new Intent(requireContext(), HomeDetailsRoomActivity.class);
+            intent.putExtra("data", item);
+            startActivity(intent);
         });
     }
 
@@ -37,5 +56,55 @@ public class HomeFragment extends BaseFragment {
     @Override
     protected void initContent(Bundle savedInstanceState) {
 
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (isAll){
+            getAllRoom();
+        }else{
+
+        }
+    }
+
+    private void getAllRoom() {
+        HttpUtils.get("room/", new HttpUtils.HttpCallback() {
+            @Override
+            public void onSuccess(String response) {
+                HomeRoomDataBean homeRoomDataBean = new Gson().fromJson(response, HomeRoomDataBean.class);
+                homeRoomAdapter.setNewInstance(homeRoomDataBean.getList());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()){
+            case R.id.tvAll:
+                setTabStyle(true);
+                break;
+            case R.id.tvMy:
+                setTabStyle(false);
+                break;
+        }
+    }
+
+    private void setTabStyle(boolean isAll) {
+        this.isAll = isAll;
+        if (isAll){
+            getAllRoom();
+        }else{
+
+        }
+        tvAll.setBackground(isAll ? requireContext().getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvMy.setBackground(!isAll ? requireContext().getDrawable(R.drawable.shape_account_type_selected) : null);
+        tvAll.setTextColor(Color.parseColor(isAll ? "#FFFFFF" : "#262936"));
+        tvMy.setTextColor(Color.parseColor(!isAll ? "#FFFFFF" : "#262936"));
     }
 }

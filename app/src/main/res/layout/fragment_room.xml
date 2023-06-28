@@ -24,42 +24,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
-                android:text="首页"
+                android:text="会议"
                 android:textColor="@color/color_303133"
                 android:textSize="18sp"
                 android:textStyle="bold" />
         </RelativeLayout>
     </androidx.appcompat.widget.LinearLayoutCompat>
-
-    <RelativeLayout
-        android:id="@+id/rlSearch"
-        android:layout_width="match_parent"
-        android:layout_height="54dp"
-        android:layout_marginHorizontal="20dp"
-        android:layout_below="@id/llTitle">
-
-        <EditText
-            android:layout_width="match_parent"
-            android:layout_height="30dp"
-            android:hint="搜索"
-            android:textSize="14sp"
-            android:paddingLeft="16dp"
-            android:textColor="#909399"
-            android:layout_toLeftOf="@id/tvBtn"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="10dp"
-            android:background="@drawable/bg_search"/>
-
-        <TextView
-            android:id="@+id/tvBtn"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="确定"
-            android:layout_alignParentRight="true"
-            android:textSize="14sp"
-            android:textColor="#909399"
-            android:layout_centerVertical="true"/>
-    </RelativeLayout>
 
     <LinearLayout
         android:id="@+id/rl_tab"
@@ -71,24 +41,24 @@
         android:gravity="center_vertical"
         android:layout_gravity="center_horizontal"
         android:padding="2dp"
-        android:layout_below="@id/rlSearch">
+        android:layout_below="@id/llTitle">
 
         <TextView
-            android:id="@+id/tvAll"
+            android:id="@+id/tvMyAll"
             android:layout_width="100dp"
             android:layout_height="26dp"
             android:background="@drawable/shape_account_type_selected"
             android:gravity="center"
-            android:text="所有会议室"
+            android:text="我的会议"
             android:textColor="#FFFFFF"
             android:textSize="16sp" />
 
         <TextView
-            android:id="@+id/tvMy"
+            android:id="@+id/tvAttend"
             android:layout_width="100dp"
             android:layout_height="26dp"
             android:gravity="center"
-            android:text="我的会议室"
+            android:text="我参加的会议"
             android:textColor="#262936"
             android:textSize="16sp" />
     </LinearLayout>
@@ -98,24 +68,4 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/rl_tab" />
-
-    <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/addRoom"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentBottom="true"
-        android:layout_alignParentRight="true"
-        android:layout_marginBottom="50dp"
-        android:layout_marginRight="20dp"
-        android:backgroundTint="@color/colorPrimary"
-        android:src="@mipmap/add"
-        app:backgroundTintMode="screen"
-        app:borderWidth="0dp"
-        android:visibility="gone"
-        app:hoveredFocusedTranslationZ="18dp"
-        app:maxImageSize="50dp"
-        app:pressedTranslationZ="18dp"
-        app:rippleColor="#FFFFFF"
-        app:tint="#FFFFFF"
-        app:useCompatPadding="false" />
 </RelativeLayout>

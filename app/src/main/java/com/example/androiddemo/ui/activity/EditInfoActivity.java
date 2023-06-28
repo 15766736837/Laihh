@@ -39,6 +39,7 @@ public class EditInfoActivity extends BaseActivity {
             HttpUtils.put("user/", new Gson().toJson(params), new HttpUtils.HttpCallback() {
                 @Override
                 public void onSuccess(String response) {
+                    MMKV.defaultMMKV().encode("user", response);
                     Toast.makeText(EditInfoActivity.this, "修改成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }
