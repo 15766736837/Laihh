@@ -15,6 +15,8 @@ import com.example.androiddemo.ui.adapter.MainFragmentPagerAdapter;
 import com.example.androiddemo.R;
 import com.example.androiddemo.ui.fragment.HomeFragment;
 import com.example.androiddemo.ui.fragment.MeFragment;
+import com.example.androiddemo.ui.fragment.NoticeFragment;
+import com.example.androiddemo.ui.fragment.RoomFragment;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.navigation.NavigationBarView;
 
@@ -49,8 +51,14 @@ public class MainActivity extends BaseActivity {
                 case R.id.home:
                     mViewpager.setCurrentItem(0);
                     break;
-                case R.id.me:
+                case R.id.room:
                     mViewpager.setCurrentItem(1);
+                    break;
+                case R.id.notice:
+                    mViewpager.setCurrentItem(2);
+                    break;
+                case R.id.me:
+                    mViewpager.setCurrentItem(3);
             }
             return false;
         });
@@ -62,6 +70,8 @@ public class MainActivity extends BaseActivity {
         mViewpager = findViewById(R.id.viewpager);
         mFragmentList = new ArrayList<>();
         mFragmentList.add(new HomeFragment());
+        mFragmentList.add(new RoomFragment());
+        mFragmentList.add(new NoticeFragment());
         mFragmentList.add(new MeFragment());
         MainFragmentPagerAdapter pagerAdapter = new MainFragmentPagerAdapter(getSupportFragmentManager(), mFragmentList);
         mViewpager.setAdapter(pagerAdapter);
