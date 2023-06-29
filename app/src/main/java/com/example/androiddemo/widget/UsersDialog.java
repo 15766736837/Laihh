@@ -10,12 +10,16 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Toast;
 
+import com.chad.library.adapter.base.BaseQuickAdapter;
+import com.chad.library.adapter.base.listener.OnItemClickListener;
 import com.example.androiddemo.R;
+import com.example.androiddemo.bean.UserDataBean;
 import com.example.androiddemo.bean.UsersBean;
 import com.example.androiddemo.ui.adapter.UsersAdapter;
 import com.example.androiddemo.utils.HttpUtils;
 import com.google.gson.Gson;
 
+import androidx.annotation.NonNull;
 import androidx.fragment.app.DialogFragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -39,14 +43,22 @@ public class UsersDialog extends DialogFragment {
 
             if (!users.isEmpty())
                 users = users.substring(0, users.length() - 1);
-            if (this.listener != null)
-                this.listener.onDefine(users);
+//            if (this.listener != null)
+//                this.listener.onDefine(users);
             dismiss();
         });
         // 在这里可以对RecyclerView进行进一步设置，例如设置Adapter等
         mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext(), LinearLayoutManager.VERTICAL, false));
         usersAdapter = new UsersAdapter(R.layout.item_user);
         mRecyclerView.setAdapter(usersAdapter);
+        usersAdapter.setOnItemClickListener((adapter, view1, position) -> {
+            UserDataBean.UserBean userBean = (UserDataBean.UserBean) adapter.getItem(position);
+            userBean.setSelect(!userBean.isSelect());
+            usersAdapter.notifyDataSetChanged();
+            if (this.listener != null)
+                this.listener.onDefine(userBean);
+            dismiss();
+        });
         return view;
     }
 
@@ -89,6 +101,6 @@ public class UsersDialog extends DialogFragment {
     }
 
     public interface DialogCallback {
-        void onDefine(String response);
+        void onDefine(UserDataBean.UserBean userBean);
     }
 }

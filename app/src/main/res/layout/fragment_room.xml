@@ -60,7 +60,7 @@
             android:gravity="center"
             android:text="我参加的会议"
             android:textColor="#262936"
-            android:textSize="16sp" />
+            android:textSize="14sp" />
     </LinearLayout>
 
     <androidx.recyclerview.widget.RecyclerView

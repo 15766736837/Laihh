@@ -138,7 +138,7 @@ public class HttpUtils  {
                     conn.setDoInput(true);
                     conn.setRequestProperty("Content-Type", CONTENT_TYPE_JSON);
                     conn.connect();
-                    Log.e("Http: ", json);
+                    Log.e("Http入参: ", json);
                     os = conn.getOutputStream();
                     os.write(json.getBytes(CHARSET_UTF8));
                     os.flush();
@@ -167,6 +167,7 @@ public class HttpUtils  {
                                     if (code == 200){
                                         callback.onSuccess(jsonObject.getString("data"));
                                     }else {
+                                        Log.e("Http出参: ", result);
                                         Toast.makeText(BaseApplication.app, jsonObject.getString("msg"), Toast.LENGTH_SHORT).show();
                                     }
                                 } catch (JSONException e) {

@@ -17,10 +17,6 @@ public class UsersAdapter extends BaseQuickAdapter<UserDataBean.UserBean, BaseVi
     @Override
     protected void convert(@NonNull BaseViewHolder baseViewHolder, UserDataBean.UserBean userBean) {
         baseViewHolder.setText(R.id.tvContent, userBean.getNickname());
-        baseViewHolder.getView(R.id.rlRoot).setOnClickListener(v -> {
-            userBean.setSelect(!userBean.isSelect());
-            baseViewHolder.setImageResource(R.id.ivSelect, userBean.isSelect() ? R.mipmap.icon_cb_select : R.mipmap.icon_cb_not_selected);
-            notifyDataSetChanged();
-        });
+        baseViewHolder.setImageResource(R.id.ivSelect, userBean.isSelect() ? R.mipmap.icon_cb_select : R.mipmap.icon_cb_not_selected);
     }
 }

@@ -1,7 +1,9 @@
 package com.example.androiddemo.ui.activity;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -25,6 +27,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
+import okhttp3.OkHttpClient;
+
 /**
  * 预约会议室
  */
@@ -34,8 +38,10 @@ public class HomeDetailsRoomActivity extends BaseActivity {
     private TimePickerView pvTime, pvEndTime;
     private long time, endTime;
     private EditText etTitle, etDescribe;
+    private Button btnReservation, btnModify;
     private HomeRoomDataBean.HomeRoomBean data;
     private int type;
+    private UsersBean usersBean;
 
     @Override
     public void initEvent() {
@@ -53,12 +59,30 @@ public class HomeDetailsRoomActivity extends BaseActivity {
         etTitle = findViewById(R.id.etTitle);
         etDescribe = findViewById(R.id.etDescribe);
         tvUsers = findViewById(R.id.tvUsers);
+        btnReservation = findViewById(R.id.btnReservation);
+        btnModify = findViewById(R.id.btnModify);
         tvDate.setOnClickListener(v -> pvTime.show());
         tvEndDate.setOnClickListener(v -> pvEndTime.show());
         tvUsers.setOnClickListener(v -> {
             UsersDialog dialogFragment = new UsersDialog();
             dialogFragment.show(getSupportFragmentManager(), "MyDialog");
-            dialogFragment.setDialogCallback(response -> Toast.makeText(HomeDetailsRoomActivity.this, response, Toast.LENGTH_SHORT).show());
+            dialogFragment.setDialogCallback(response -> {
+                Map<String, String> params = new HashMap<>();
+                params.put("uid", response.getId() + "");
+                params.put("mid", data.getMid() + "");
+                HttpUtils.post("client/meeting/group/add/", new Gson().toJson(params), new HttpUtils.HttpCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        Toast.makeText(HomeDetailsRoomActivity.this, "邀请加入会议成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+            });
         });
 
         //系统当前时间
@@ -82,7 +106,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                 .setRangDate(instance, null)//起始终止年月日设定
                 .build();
 
-        findViewById(R.id.btnReservation).setOnClickListener(v -> {
+        btnReservation.setOnClickListener(v -> {
             if (type == 1){
                 //预约
                 if (tvDate.getText() != null && !tvDate.getText().toString().isEmpty() &&
@@ -93,6 +117,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                     params.put("uid", userDataBean.getUser().getId() + "");
                     params.put("rid", data.getId() + "");
                     params.put("appointTime", time + "");
+                    params.put("endTime", endTime + "");
                     HttpUtils.post("meeting/reservation/", new Gson().toJson(params), new HttpUtils.HttpCallback() {
                         @Override
                         public void onSuccess(String response) {
@@ -108,9 +133,54 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                 }else{
                     Toast.makeText(this, "请选择时间", Toast.LENGTH_SHORT).show();
                 }
-            }else{
+            }else if (type == 2){
                 //预定
                 clientMeeting();
+            }else if(type == 3){
+                if (usersBean.getList().size() <= 0){
+                    Toast.makeText(this, "请先添加参会人员", Toast.LENGTH_SHORT).show();
+                }else{
+                    //发起会议
+                    Map<String, String> params = new HashMap<>();
+                    params.put("id", data.getMid() + "");
+                    HttpUtils.get("client/meeting/start/"+data.getMid(), new HttpUtils.HttpCallback() {
+                        @Override
+                        public void onSuccess(String response) {
+                            Toast.makeText(HomeDetailsRoomActivity.this, "会议开始", Toast.LENGTH_SHORT).show();
+                            finish();
+                        }
+
+                        @Override
+                        public void onFailure(Exception e) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        btnModify.setOnClickListener(v -> {
+            //修改会议信息
+            if (etTitle.getText() != null && !etTitle.getText().toString().isEmpty() &&
+                    etDescribe.getText() != null && !etDescribe.getText().toString().isEmpty()) {
+                Map<String, String> params = new HashMap<>();
+                params.put("id", data.getMid() + "");
+                params.put("title", etTitle.getText().toString());
+                params.put("topic", etDescribe.getText().toString());
+                HttpUtils.put("client/meeting/", new Gson().toJson(params), new HttpUtils.HttpCallback() {
+                    @Override
+                    public void onSuccess(String response) {
+                        Toast.makeText(HomeDetailsRoomActivity.this, "信息修改成功", Toast.LENGTH_SHORT).show();
+                        finish();
+                    }
+
+                    @Override
+                    public void onFailure(Exception e) {
+
+                    }
+                });
+            }else {
+                Toast.makeText(this, "会议信息不能为空", Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -129,11 +199,10 @@ public class HomeDetailsRoomActivity extends BaseActivity {
             params.put("topic", etDescribe.getText().toString());
             params.put("uid", userDataBean.getUser().getId() + "");
             params.put("rid", data.getId() + "");
-//            params.put("appointTime", time + "");
             HttpUtils.post("client/meeting/", new Gson().toJson(params), new HttpUtils.HttpCallback() {
                 @Override
                 public void onSuccess(String response) {
-                    Toast.makeText(HomeDetailsRoomActivity.this, "预约成功", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(HomeDetailsRoomActivity.this, "预定成功", Toast.LENGTH_SHORT).show();
                     finish();
                 }
 
@@ -156,17 +225,96 @@ public class HomeDetailsRoomActivity extends BaseActivity {
     protected void initContent(Bundle savedInstanceState) {
         data = (HomeRoomDataBean.HomeRoomBean) getIntent().getSerializableExtra("data");
         type = getIntent().getIntExtra("type", 1);
-        type = 2;
-        etTitle.setVisibility(type == 1 ? View.GONE : View.VISIBLE);
-        etDescribe.setVisibility(type == 1 ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rlUsers).setVisibility(type == 1 ? View.GONE : View.VISIBLE);
-        findViewById(R.id.view).setVisibility(type == 1 ? View.GONE : View.VISIBLE);
-        findViewById(R.id.rlStart).setVisibility(type == 1 ? View.VISIBLE : View.GONE);
-        findViewById(R.id.rlEnd).setVisibility(type == 1 ? View.VISIBLE : View.GONE);
-        findViewById(R.id.view1).setVisibility(type == 1 ? View.VISIBLE : View.GONE);
-        tvTitle.setText(type == 1 ? "预约详情" : "预定详情");
+
+        switch (type){
+            case 1:
+                //预约详情
+                findViewById(R.id.rlStart).setVisibility(View.VISIBLE);
+                findViewById(R.id.rlEnd).setVisibility(View.VISIBLE);
+                findViewById(R.id.view1).setVisibility(View.VISIBLE);
+                tvTitle.setText("预约详情");
+                btnReservation.setText("确定预约");
+                ((TextView)findViewById(R.id.tvInfoTitle)).setText("会议室预约信息");
+                break;
+            case 2:
+                //预定详情
+                etTitle.setVisibility(View.VISIBLE);
+                etDescribe.setVisibility(View.VISIBLE);
+                findViewById(R.id.view).setVisibility(View.VISIBLE);
+                tvTitle.setText("预定详情");
+                btnReservation.setText("确定预定");
+                ((TextView)findViewById(R.id.tvInfoTitle)).setText("会议室预定信息");
+                break;
+            case 3:
+                findViewById(R.id.rlUsers).setVisibility(View.VISIBLE);
+                tvTitle.setText("我的会议详情");
+                ((TextView)findViewById(R.id.tvInfoTitle)).setText("会议详情信息");
+                etTitle.setVisibility(View.VISIBLE);
+                etDescribe.setVisibility(View.VISIBLE);
+                etTitle.setText(data.getTitle());
+                etDescribe.setText(data.getTopic());
+                btnModify.setVisibility(View.VISIBLE);
+                findViewById(R.id.rlStart).setVisibility(View.VISIBLE);
+                findViewById(R.id.rlEnd).setVisibility(View.VISIBLE);
+                tvDate.setText(getTime(data.getAppointTime()));
+                tvEndDate.setText(getTime(data.getEndTime()));
+                tvDate.setEnabled(false);
+                tvEndDate.setEnabled(false);
+                getUser();
+                break;
+            case 4:
+                findViewById(R.id.rlUsers).setVisibility(View.VISIBLE);
+                tvUsers.setEnabled(false);
+                btnReservation.setVisibility(View.GONE);
+                tvTitle.setText("我的会议详情");
+                ((TextView)findViewById(R.id.tvInfoTitle)).setText("会议详情信息");
+                etTitle.setVisibility(View.VISIBLE);
+                etDescribe.setVisibility(View.VISIBLE);
+                etTitle.setText(data.getTitle());
+                etDescribe.setText(data.getTopic());
+                findViewById(R.id.rlStart).setVisibility(View.VISIBLE);
+                findViewById(R.id.rlEnd).setVisibility(View.VISIBLE);
+                tvDate.setText(getTime(data.getAppointTime()));
+                tvEndDate.setText(getTime(data.getEndTime()));
+                tvDate.setEnabled(false);
+                tvEndDate.setEnabled(false);
+                getUser();
+                break;
+        }
         title.setText(data.getName());
         tvContent.setText(data.getLocation());
+    }
+
+    private void getUser() {
+        HttpUtils.get("client/group/" + data.getMid(), new HttpUtils.HttpCallback() {
+            @Override
+            public void onSuccess(String response) {
+                /**
+                 * 如果没有参会人员：
+                 *  1，只显示添加参会人员按钮
+                 *  如果有参会人员：
+                 *  1，显示修改按钮
+                 *  2，显示发起会议按钮
+                 */
+                usersBean = new Gson().fromJson(response, UsersBean.class);
+                if (usersBean.getList().size() <= 0){
+                    //没有参会人员
+//                            btnReservation.setText("添加参会人员");
+                }else{
+                    String user = "";
+                    for (int i = 0; i < usersBean.getList().size(); i++) {
+                        user += usersBean.getList().get(i).getNickname() + " ";
+                    }
+                    tvUsers.setText(user);
+                    btnReservation.setText("发起会议");
+                }
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
     }
 
     private String getTime(long milSecond) {

@@ -9,10 +9,12 @@ import android.widget.TextView;
 import com.example.androiddemo.R;
 import com.example.androiddemo.app.BaseFragment;
 import com.example.androiddemo.bean.HomeRoomDataBean;
+import com.example.androiddemo.bean.UserDataBean;
 import com.example.androiddemo.ui.activity.HomeDetailsRoomActivity;
 import com.example.androiddemo.ui.activity.HomeRoomAdapter;
 import com.example.androiddemo.utils.HttpUtils;
 import com.google.gson.Gson;
+import com.tencent.mmkv.MMKV;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -41,7 +43,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
             HomeRoomDataBean.HomeRoomBean item = (HomeRoomDataBean.HomeRoomBean) adapter.getItem(position);
             Intent intent = new Intent(requireContext(), HomeDetailsRoomActivity.class);
             intent.putExtra("data", item);
-            intent.putExtra("type", 1);
+            intent.putExtra("type", isAll ? 1 : 2);
             startActivity(intent);
         });
     }
@@ -62,12 +64,29 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (isAll){
             getAllRoom();
         }else{
-
+            getMyRoom();
         }
     }
 
     private void getAllRoom() {
         HttpUtils.get("room/", new HttpUtils.HttpCallback() {
+            @Override
+            public void onSuccess(String response) {
+                HomeRoomDataBean homeRoomDataBean = new Gson().fromJson(response, HomeRoomDataBean.class);
+                homeRoomAdapter.setNewInstance(homeRoomDataBean.getList());
+            }
+
+            @Override
+            public void onFailure(Exception e) {
+
+            }
+        });
+    }
+
+    private void getMyRoom() {
+        String user = MMKV.defaultMMKV().decodeString("user");
+        UserDataBean userDataBean = new Gson().fromJson(user, UserDataBean.class);
+        HttpUtils.get("client/room/" + userDataBean.getUser().getId(), new HttpUtils.HttpCallback() {
             @Override
             public void onSuccess(String response) {
                 HomeRoomDataBean homeRoomDataBean = new Gson().fromJson(response, HomeRoomDataBean.class);
@@ -98,7 +117,7 @@ public class HomeFragment extends BaseFragment implements View.OnClickListener {
         if (isAll){
             getAllRoom();
         }else{
-
+            getMyRoom();
         }
         tvAll.setBackground(isAll ? requireContext().getDrawable(R.drawable.shape_account_type_selected) : null);
         tvMy.setBackground(!isAll ? requireContext().getDrawable(R.drawable.shape_account_type_selected) : null);
