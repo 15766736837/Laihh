@@ -136,7 +136,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
             }else if (type == 2){
                 //预定
                 clientMeeting();
-            }else if(type == 3){
+            }/*else if(type == 3){
                 if (usersBean.getList().size() <= 0){
                     Toast.makeText(this, "请先添加参会人员", Toast.LENGTH_SHORT).show();
                 }else{
@@ -156,7 +156,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                         }
                     });
                 }
-            }
+            }*/
         });
 
         btnModify.setOnClickListener(v -> {
@@ -182,6 +182,22 @@ public class HomeDetailsRoomActivity extends BaseActivity {
             }else {
                 Toast.makeText(this, "会议信息不能为空", Toast.LENGTH_SHORT).show();
             }
+        });
+
+        findViewById(R.id.btnDel).setOnClickListener(v -> {
+            //删除会议
+            HttpUtils.get("client/meeting/cancel/" + data.getMid(), new HttpUtils.HttpCallback() {
+                @Override
+                public void onSuccess(String response) {
+                    Toast.makeText(HomeDetailsRoomActivity.this, "删除成功", Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(Exception e) {
+
+                }
+            });
         });
     }
 
@@ -249,6 +265,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                 findViewById(R.id.rlUsers).setVisibility(View.VISIBLE);
                 tvTitle.setText("我的会议详情");
                 ((TextView)findViewById(R.id.tvInfoTitle)).setText("会议详情信息");
+                btnReservation.setVisibility(View.GONE);
                 etTitle.setVisibility(View.VISIBLE);
                 etDescribe.setVisibility(View.VISIBLE);
                 etTitle.setText(data.getTitle());
@@ -256,6 +273,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                 btnModify.setVisibility(View.VISIBLE);
                 findViewById(R.id.rlStart).setVisibility(View.VISIBLE);
                 findViewById(R.id.rlEnd).setVisibility(View.VISIBLE);
+                findViewById(R.id.btnDel).setVisibility(View.VISIBLE);
                 tvDate.setText(getTime(data.getAppointTime()));
                 tvEndDate.setText(getTime(data.getEndTime()));
                 tvDate.setEnabled(false);
@@ -306,7 +324,7 @@ public class HomeDetailsRoomActivity extends BaseActivity {
                         user += usersBean.getList().get(i).getNickname() + " ";
                     }
                     tvUsers.setText(user);
-                    btnReservation.setText("发起会议");
+//                    btnReservation.setText("发起会议");
                 }
             }
 
